@@ -1,6 +1,6 @@
 ﻿namespace DistributedSystem.Contract.Abstractions.Message
 {
-    public class IDomainEvent
+    public interface IDomainEvent
     {
     }
 }

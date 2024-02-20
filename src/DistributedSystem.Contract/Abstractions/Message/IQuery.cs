@@ -1,6 +1,6 @@
 ﻿namespace DistributedSystem.Contract.Abstractions.Message
 {
-    public class IQuery
+    public interface IQuery
     {
     }
 }
