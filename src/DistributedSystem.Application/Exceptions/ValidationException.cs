@@ -5,7 +5,7 @@ namespace DistributedSystem.Application.Exceptions
     public sealed class ValidationException : DomainException
     {
         public ValidationException(IReadOnlyCollection<ValidationError> error)
-            : base("One or more validation failures have occurred.")
+            : base("Validation Failure", "One or more validation failures have occurred.")
         {
             Errors = error;
         }
