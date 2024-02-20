@@ -16,6 +16,10 @@
         public string Message { get; }
 
         public static implicit operator string(Error error) => error.Code;
+        // Giải thích
+        //Error error = new Error("E001", "Error message");
+        //string errorCode = error; // Toán tử chuyển đổi ngầm dịch được kích hoạt ở đây
+        //Console.WriteLine(errorCode); // Kết quả: "E001"
 
         public static bool operator ==(Error? a, Error? b)
         {

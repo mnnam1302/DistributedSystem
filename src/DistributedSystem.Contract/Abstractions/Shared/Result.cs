@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace DistributedSystem.Contract.Abstractions.Shared
+﻿namespace DistributedSystem.Contract.Abstractions.Shared
 {
     public class Result
     {
@@ -21,7 +19,7 @@ namespace DistributedSystem.Contract.Abstractions.Shared
         }
 
         public bool IsSuccess { get; }
-        
+
         public bool IsFailure => !IsSuccess;
 
         public Error Error { get; }

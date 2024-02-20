@@ -1,4 +1,6 @@
-﻿namespace DistributedSystem.Application.Exceptions
+﻿using DistributedSystem.Domain.Exceptions;
+
+namespace DistributedSystem.Application.Exceptions
 {
     public sealed class ValidationException : DomainException
     {
