@@ -1,6 +1,7 @@
 ﻿using DistributedSystem.Domain.Abstractions.Aggregates;
 using DistributedSystem.Domain.Abstractions.Entities;
 using System.Diagnostics.Contracts;
+using static DistributedSystem.Domain.Exceptions.ProductException;
 
 namespace DistributedSystem.Domain.Entities
 {
@@ -28,6 +29,13 @@ namespace DistributedSystem.Domain.Entities
 
         public Product(Guid id, string name, decimal price, string description)
         {
+            // Check lỗi ở đây, nếu có throw ra luôn => Domain driven design
+            // Tất cả code nằm chung một chỗ, sau này một thành viên nào không đọc kỹ về requirement, thì sẽ bị lỗi
+            // Code centralized
+            // Khi throw ra thì phải hướng nó ở Global Exception Handler => Hướng đúng lỗi => ExceptionHandlingMiddleware
+            if (name.Length > 10)
+                throw new ProductFieldException(nameof(Name));
+
             Id = id;
             Name = name;
             Price = price;
