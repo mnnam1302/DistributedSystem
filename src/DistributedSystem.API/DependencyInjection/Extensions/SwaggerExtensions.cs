@@ -7,7 +7,7 @@ namespace DistributedSystem.API.DependencyInjection.Extensions
 {
     public static class SwaggerExtensions
     {
-        public static void AddSwaggerGen(this IServiceCollection services)
+        public static void AddSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen();
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -28,6 +28,6 @@ namespace DistributedSystem.API.DependencyInjection.Extensions
 
             app.MapGet("/", () => Results.Redirect("/swagger/index.html"))
                 .WithTags(string.Empty);
-        }
+        } 
     }
 }

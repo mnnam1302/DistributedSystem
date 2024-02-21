@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Add configuration
 
+// Add Serilog
 Log.Logger = new LoggerConfiguration().ReadFrom
     .Configuration(builder.Configuration)
     .CreateLogger();
@@ -34,8 +35,9 @@ builder.Services
     .AddSwaggerGenNewtonsoftSupport()
     .AddFluentValidationRulesToSwagger()
     .AddEndpointsApiExplorer()
-    .AddSwaggerGen();
+    .AddSwagger();
 
+// Add API versioning
 builder.Services
     .AddApiVersioning(options => options.ReportApiVersions = true)
     .AddApiExplorer(options =>
@@ -49,15 +51,17 @@ var app = builder.Build();
 // Using middleware
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+// Add API endpoint with Carter module
+app.MapCarter();
+
 // Configure the HTTP request pipeline.
 if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
-    app.ConfigureSwagger();
+    app.ConfigureSwagger(); // => After MapCarter => Show Version
 
 //app.UseHttpsRedirection();
 
 //app.UseAuthorization();
 
-app.MapCarter();
 //app.MapControllers();
 
 try

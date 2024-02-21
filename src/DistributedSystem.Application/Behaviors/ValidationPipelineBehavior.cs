@@ -52,6 +52,8 @@ namespace DistributedSystem.Application.Behaviors
                 return (ValidationResult.WithErrors(errors) as TResult)!;
             }
 
+            // Read more: https://learn.microsoft.com/en-us/dotnet/api/system.type.makegenerictype?view=net-8.0#system-type-makegenerictype(system-type())
+
             //object validationResult = typeof(ValidationResult<>)
             object validationResult = typeof(ValidationResult)
                 .GetGenericTypeDefinition()
