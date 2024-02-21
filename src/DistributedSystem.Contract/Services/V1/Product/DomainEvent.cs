@@ -4,10 +4,14 @@ namespace DistributedSystem.Contract.Services.V1.Product
 {
     public static class DomainEvent
     {
-        public record ProductCreatedEvent(Guid IdEvent, Guid Id, string Name, decimal Price, string Description) : IDomainEvent;
+        // Kế thừa từ interface cha IDomainEvent
+        // Tất cả class mà kế thừa từ INTERFACE IDomainEvent đều có thể add vào List<IDomainEvent> trong class AggregateRoot
+        // => Tính chất đa hình
+        // => Điểm hay của việc kế thừa từ interface
+        public record ProductCreated(Guid IdEvent, Guid Id, string Name, decimal Price, string Description) : IDomainEvent;
 
-        public record ProductDeleteEvent(Guid IdEvent, Guid Id) : IDomainEvent;
+        public record ProductDeleted(Guid IdEvent, Guid Id) : IDomainEvent;
 
-        public record ProductUpdatedEvent(Guid IdEvent, Guid Id, string Name, decimal Price, string Description) : IDomainEvent;
+        public record ProductUpdated(Guid IdEvent, Guid Id, string Name, decimal Price, string Description) : IDomainEvent;
     }
 }
