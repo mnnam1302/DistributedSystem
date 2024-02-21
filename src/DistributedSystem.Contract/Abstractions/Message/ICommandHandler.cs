@@ -1,9 +1,15 @@
-﻿using MediatR;
+﻿using DistributedSystem.Contract.Abstractions.Shared;
+using MediatR;
 
 namespace DistributedSystem.Contract.Abstractions.Message
 {
-    public interface ICommandHandler : INotification
+    public interface ICommandHandler<TCommand> : IRequestHandler<TCommand, Result>
+        where TCommand : ICommand
     {
-        public Guid IdEvent { get; init; }
+    }
+
+    public interface ICommandHandler<TCommand, TResponse> : IRequestHandler<TCommand, Result<TResponse>>
+        where TCommand : ICommand<TResponse>
+    {
     }
 }
