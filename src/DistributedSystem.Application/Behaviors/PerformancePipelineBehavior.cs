@@ -29,8 +29,7 @@ namespace DistributedSystem.Application.Behaviors
                 return response;
 
             var requestName = typeof(TRequest).Name;
-            _logger.LogWarning("Long Time Running: Request Details: {Name} ({ElapsedMilliseconds} milliseconds) {@Request}",
-                               requestName, elapsedMilliseconds, request);
+            _logger.LogWarning("Long Time Running: Request Details: {Name} ({ElapsedMilliseconds} milliseconds) {@Request}", requestName, elapsedMilliseconds, request);
 
             return response;
         }
