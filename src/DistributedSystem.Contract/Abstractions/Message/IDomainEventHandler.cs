@@ -1,6 +1,9 @@
-﻿namespace DistributedSystem.Contract.Abstractions.Message
+﻿using MediatR;
+
+namespace DistributedSystem.Contract.Abstractions.Message
 {
-    public interface IDomainEventHandler
-    {
-    }
+    //public interface IDomainEventHandler<TEvent> : INotificationHandler<TEvent>
+    //    where TEvent : IDomainEvent
+    //{
+    //}
 }
