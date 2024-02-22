@@ -8,6 +8,6 @@
         public bool? IsActive { get; set; }
 
         public virtual ICollection<Permission> Permissions { get; set; }
-        public virtual ICollection<ActionFunction> ActionFunctions { get; set; }
+        public virtual ICollection<ActionInFunction> ActionInFunctions { get; set; }
     }
 }
