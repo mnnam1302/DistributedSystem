@@ -1,5 +1,4 @@
-﻿using DistributedSystem.Domain.Abstractions.Entities;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace DistributedSystem.Domain.Abstractions.Repositories
 {
