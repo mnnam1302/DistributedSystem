@@ -30,6 +30,9 @@ namespace DistributedSystem.Persistence
             //ConvertDomainToOutboxMessage();
             //UpdateAuditableEntities();
 
+            // Mình không muốn viết ở đây => Mình sẽ triển khai nó ở Interceptor
+            // Kế thừa SaveChangesInterceptor, trước khi SaveChange nó làm cái gì?
+
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
