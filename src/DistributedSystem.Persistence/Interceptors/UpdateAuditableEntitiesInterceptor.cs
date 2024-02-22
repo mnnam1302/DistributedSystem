@@ -8,7 +8,7 @@ namespace DistributedSystem.Persistence.Interceptors
     public sealed class UpdateAuditableEntitiesInterceptor
         : SaveChangesInterceptor
     {
-        public override ValueTask<InterceptionResult<int>> SaveChangesAsync(
+        public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
             DbContextEventData eventData,
             InterceptionResult<int> result,
             CancellationToken cancellationToken = default)

@@ -2,6 +2,8 @@ using Carter;
 using DistributedSystem.API.DependencyInjection.Extensions;
 using DistributedSystem.API.Middleware;
 using DistributedSystem.Application.DependencyInjection.Extensions;
+using DistributedSystem.Persistence.DependencyInjection.Extensions;
+using DistributedSystem.Persistence.DependencyInjection.Options;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Serilog;
 
@@ -23,6 +25,15 @@ builder.Host.UseSerilog();
 
 builder.Services.AddConfigureMediatR();
 builder.Services.AddConfigureAutoMapper();
+
+// Configure Options and SQL =>  remember mapcarter
+builder.Services.AddInterceptorDbContext();
+
+// Pass Configuration good - builder.Configuration.GetSection(nameof(SqlServerRetryOptions))
+// Not hard code at ConfigureSqlServerRetryOptions at Persistence ** My ERROR
+builder.Services.ConfigureSqlServerRetryOptions(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
+builder.Services.AddSqlConfiguration();
+builder.Services.AddRepositoryBaseConfiguration();
 
 // Add Middleware => Remember use middleware
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();

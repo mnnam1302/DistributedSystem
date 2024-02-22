@@ -1,16 +1,9 @@
-﻿using DistributedSystem.Contract.Services.V1.Product;
-using DistributedSystem.Domain.Abstractions;
+﻿using DistributedSystem.Domain.Abstractions;
 using DistributedSystem.Domain.Abstractions.Entities;
 using DistributedSystem.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace DistributedSystem.Persistence
 {
@@ -59,7 +52,7 @@ namespace DistributedSystem.Persistence
                 {
                     Id = Guid.NewGuid(),
                     OccurredOnUtc = DateTime.UtcNow,
-                    Type = domainEvent.GetType().Name, // Ví dụ, cem ProductCreated hay ProductUpdated, ProductDeleted event 
+                    Type = domainEvent.GetType().Name, // Ví dụ, cem ProductCreated hay ProductUpdated, ProductDeleted event
                     Content = JsonConvert.SerializeObject(
                         domainEvent,
                         new JsonSerializerSettings
@@ -75,7 +68,7 @@ namespace DistributedSystem.Persistence
 
         private void UpdateAuditableEntities()
         {
-            IEnumerable<EntityEntry<IAuditableEntity>> entites = 
+            IEnumerable<EntityEntry<IAuditableEntity>> entites =
                 _dbContext.ChangeTracker
                 .Entries<IAuditableEntity>();
 

@@ -7,7 +7,7 @@ namespace DistributedSystem.Persistence.Interceptors
 {
     // Kế thừa SaveChangesInterceptor, trước khi SaveChange nó làm cái gì?
     // DI inject nó vào thì nó chạy thôi
-    public sealed class ConvertDomainEventsToOutboxMessageInterceptor
+    public sealed class ConvertDomainEventsToOutboxMessagesInterceptor
         : SaveChangesInterceptor
     {
         public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
