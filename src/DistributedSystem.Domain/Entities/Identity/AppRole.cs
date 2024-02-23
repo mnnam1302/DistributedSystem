@@ -7,7 +7,7 @@ namespace DistributedSystem.Domain.Entities.Identity
         public string Description { get; set; }
         public string RoleCode { get; set; }
 
-        public virtual ICollection<IdentityUserRole<Guid>> IdentityUserRoles { get; set; }
+        public virtual ICollection<IdentityUserRole<Guid>> UserRoles { get; set; }
         public virtual ICollection<IdentityRoleClaim<Guid>> Claims { get; set; }
         public virtual ICollection<Permission> Permissions { get; set; }
     }
