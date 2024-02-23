@@ -22,11 +22,11 @@ namespace DistributedSystem.Presentation.APIs.Products
             var group1 = app.NewVersionedApi("products")
                 .MapGroup(BaseUrl).HasApiVersion(1);
 
-            group1.MapPost(string.Empty, () => CreateProductsV1);
-            group1.MapGet(string.Empty, () => GetProductsV1);
-            group1.MapGet("{productId}", () => GetProductsByIdV1);
-            group1.MapDelete("{productId}", () => DeleteProductsV1);
-            group1.MapPut("{productId}", () => UpdateProductsV1);
+            group1.MapPost(string.Empty, CreateProductsV1);
+            group1.MapGet(string.Empty, GetProductsV1);
+            group1.MapGet("{productId}", GetProductsByIdV1);
+            group1.MapDelete("{productId}", DeleteProductsV1);
+            group1.MapPut("{productId}", UpdateProductsV1);
 
             #endregion ========= Version 1 =========
 
