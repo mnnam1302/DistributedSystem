@@ -13,20 +13,6 @@ namespace DistributedSystem.Domain.Entities
         public DateTimeOffset CreatedOnUtc { get; set; }
         public DateTimeOffset? ModifiedOnUtc { get; set; }
 
-        // Thằng này mới nên chưa có instance nào reference đến Create, ví dụ, instance.Create(...) => Không có => có static
-        public static Product Create(Guid id, string name, decimal price, string description)
-        {
-            var product = new Product(id, name, price, description);
-
-            // Khi Raise event , thì sẽ add class ProductCreated vào trong List
-            product.RaiseDomainEvent(new Contract.Services.V1.Product.DomainEvent.ProductCreated(Guid.NewGuid(), product.Id,
-                product.Name, product.Price, 
-                product.Description
-                ));
-
-            return product;
-        }
-
         public Product(Guid id, string name, decimal price, string description)
         {
             // Check lỗi ở đây, nếu có throw ra luôn => Domain driven design
@@ -40,6 +26,20 @@ namespace DistributedSystem.Domain.Entities
             Name = name;
             Price = price;
             Description = description;
+        }
+
+        // Thằng này mới nên chưa có instance nào reference đến Create, ví dụ, instance.Create(...) => Không có => có static
+        public static Product Create(Guid id, string name, decimal price, string description)
+        {
+            var product = new Product(id, name, price, description);
+
+            // Khi Raise event , thì sẽ add class ProductCreated vào trong List
+            product.RaiseDomainEvent(new Contract.Services.V1.Product.DomainEvent.ProductCreated(Guid.NewGuid(), product.Id,
+                product.Name, product.Price, 
+                product.Description
+                ));
+
+            return product;
         }
 
         // Có instance hay đối tượng reference đến Update, ví dụ, instance.Update(...) 
