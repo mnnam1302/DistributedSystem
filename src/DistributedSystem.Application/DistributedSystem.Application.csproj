@@ -15,12 +15,12 @@
   <ItemGroup>
     <Folder Include="DependencyInjection\Options\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="UseCases\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DistributedSystem.Contract\DistributedSystem.Contract.csproj" />
     <ProjectReference Include="..\DistributedSystem.Domain\DistributedSystem.Domain.csproj" />
+    <ProjectReference Include="..\DistributedSystem.Persistence\DistributedSystem.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

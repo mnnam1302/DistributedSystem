@@ -26,6 +26,9 @@ builder.Host.UseSerilog();
 builder.Services.AddConfigureMediatR();
 builder.Services.AddConfigureAutoMapper();
 
+// Add Middleware => Remember use middleware
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+
 // Configure Options and SQL =>  remember mapcarter
 builder.Services.AddInterceptorDbContext();
 
@@ -34,9 +37,6 @@ builder.Services.AddInterceptorDbContext();
 builder.Services.ConfigureSqlServerRetryOptions(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
 builder.Services.AddSqlConfiguration();
 builder.Services.AddRepositoryBaseConfiguration();
-
-// Add Middleware => Remember use middleware
-builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 // Add Carter module
 builder.Services.AddCarter();
