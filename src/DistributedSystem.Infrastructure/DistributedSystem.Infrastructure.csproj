@@ -7,9 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Authentication\" />
     <Folder Include="Caching\" />
-    <Folder Include="DependencyInjection\Extensions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DistributedSystem.Application\DistributedSystem.Application.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,7 @@ using Carter;
 using DistributedSystem.API.DependencyInjection.Extensions;
 using DistributedSystem.API.Middleware;
 using DistributedSystem.Application.DependencyInjection.Extensions;
+using DistributedSystem.Infrastructure.DependencyInjection.Extensions;
 using DistributedSystem.Persistence.DependencyInjection.Extensions;
 using DistributedSystem.Persistence.DependencyInjection.Options;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
@@ -20,6 +21,8 @@ Log.Logger = new LoggerConfiguration().ReadFrom
 builder.Logging
     .ClearProviders()
     .AddSerilog();
+
+builder.Services.AddInfrastructureServices();
 
 builder.Host.UseSerilog();
 
@@ -71,8 +74,6 @@ var app = builder.Build();
 // Using middleware
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-// Add API endpoint with Carter module
-app.MapCarter();
 
 // Configure the HTTP request pipeline.
 if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
@@ -84,6 +85,10 @@ app.UseAuthentication(); // This to need added before UseAuthorization
 app.UseAuthorization();
 
 //app.MapControllers();
+
+// Add API endpoint with Carter module
+app.MapCarter(); // Must be after authenticatio and authorization
+
 
 try
 {
