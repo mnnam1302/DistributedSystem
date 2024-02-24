@@ -34,8 +34,8 @@ namespace DistributedSystem.API.DependencyInjection.Extensions
                 var Key = Encoding.UTF8.GetBytes(jwtOptions.SecretKey);
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = false, // on production, set to true
-                    ValidateAudience = false, // on production, set to true
+                    ValidateIssuer = true, // on production, set to true
+                    ValidateAudience = true, // on production, set to true
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtOptions.Issuer,

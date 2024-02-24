@@ -23,6 +23,7 @@ builder.Logging
     .AddSerilog();
 
 builder.Services.AddInfrastructureServices();
+builder.Services.AddRedisService(builder.Configuration);
 
 builder.Host.UseSerilog();
 

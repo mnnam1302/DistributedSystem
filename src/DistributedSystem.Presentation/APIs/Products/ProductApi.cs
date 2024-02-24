@@ -77,7 +77,6 @@ namespace DistributedSystem.Presentation.APIs.Products
             return Results.Ok(result);
         }
 
-
         public static async Task<IResult> UpdateProductsV1(ISender sender, Guid productId, [FromBody] CommandV1.Command.UpdateProductCommand updateProduct)
         {
             var updateProductCommand = new CommandV1.Command.UpdateProductCommand(productId, updateProduct.Name, updateProduct.Price, updateProduct.Description);
