@@ -23,6 +23,15 @@ builder.Logging
 
 builder.Host.UseSerilog();
 
+// Add Jwt Authentication => After, app.UseAuthentication(); app.UseAuthorization();
+builder.Services.AddJwtAuthentication(builder.Configuration);
+
+// Read more: use for situation that put Controller API at Presentation intead of API
+//builder.
+//    Services
+//    .AddControllers()
+//    .AddApplicationPart(DistributedSystem.Persistence.AssemblyReference.Assembly);
+
 builder.Services.AddConfigureMediatR();
 builder.Services.AddConfigureAutoMapper();
 
@@ -71,7 +80,8 @@ if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
 
 //app.UseHttpsRedirection();
 
-//app.UseAuthorization();
+app.UseAuthentication(); // This to need added before UseAuthorization
+app.UseAuthorization();
 
 //app.MapControllers();
 

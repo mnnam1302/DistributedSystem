@@ -31,7 +31,7 @@ namespace DistributedSystem.API.DependencyInjection.Extensions
                 options.SaveToken = true; // Save token into AuthenticationProperties
 
                 //var Key = Encoding.UTF8.GetBytes("7jCDPbBkeW8asPxdIc3jRddWpB7l63fh"); // On production
-                var Key = Encoding.UTF8.GetBytes(jwtOptions.Secret);
+                var Key = Encoding.UTF8.GetBytes(jwtOptions.SecretKey);
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = false, // on production, set to true
@@ -56,6 +56,9 @@ namespace DistributedSystem.API.DependencyInjection.Extensions
                     }
                 };
             });
+
+
+            services.AddAuthorization();
         }
     }
 }

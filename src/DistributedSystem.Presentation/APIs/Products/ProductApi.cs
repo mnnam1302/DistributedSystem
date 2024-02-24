@@ -20,7 +20,7 @@ namespace DistributedSystem.Presentation.APIs.Products
             #region ========= Version 1 =========
 
             var group1 = app.NewVersionedApi("products")
-                .MapGroup(BaseUrl).HasApiVersion(1);
+                .MapGroup(BaseUrl).HasApiVersion(1).RequireAuthorization();
 
             group1.MapPost(string.Empty, CreateProductsV1);
             group1.MapGet(string.Empty, GetProductsV1);
