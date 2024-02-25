@@ -14,7 +14,7 @@ namespace DistributedSystem.Persistence.DependencyInjection.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddSqlConfiguration(this IServiceCollection services)
+        public static void AddSqlPersistence(this IServiceCollection services)
         {
             services.AddDbContextPool<DbContext, ApplicationDbContext>((provider, builder) =>
             {
@@ -95,13 +95,13 @@ namespace DistributedSystem.Persistence.DependencyInjection.Extensions
             });
         }
 
-        public static void AddInterceptorDbContext(this IServiceCollection services)
+        public static void AddInterceptorPersistence(this IServiceCollection services)
         {
             services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
             services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
         }
 
-        public static void AddRepositoryBaseConfiguration(this IServiceCollection services)
+        public static void AddRepositoryPersistence(this IServiceCollection services)
         {
             services.AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork));
             services.AddTransient(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>));
