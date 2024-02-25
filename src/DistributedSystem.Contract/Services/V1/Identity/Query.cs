@@ -1,5 +1,4 @@
 ﻿using DistributedSystem.Contract.Abstractions.Message;
-using DistributedSystem.Contract.Services.V1.Product;
 
 namespace DistributedSystem.Contract.Services.V1.Identity
 {

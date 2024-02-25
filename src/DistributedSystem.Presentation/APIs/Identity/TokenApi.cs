@@ -19,7 +19,7 @@ namespace DistributedSystem.Presentation.APIs.Identity
         private const string BaseUrl = "/api/v{version:apiVersion}/token";
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            var group1 = app.NewVersionedApi("Token")
+            var group1 = app.NewVersionedApi("token")
                 .MapGroup(BaseUrl).HasApiVersion(1).RequireAuthorization();
 
             /**
@@ -31,7 +31,7 @@ namespace DistributedSystem.Presentation.APIs.Identity
              */
 
             group1.MapPost("refresh", RefreshV1);
-            //group1.MapPost("revoke", () => RevokeV1);
+            group1.MapPost("revoke", RevokeV1);
         }
 
         public static async Task<IResult> RefreshV1(ISender sender, HttpContext httpContext, [FromBody] Contract.Services.V1.Identity.Query.TokenQuery token)
@@ -48,9 +48,16 @@ namespace DistributedSystem.Presentation.APIs.Identity
             return Results.Ok(result);
         }
 
-        //public static async Task<IResult> RevokeV1(ISender sender)
-        //{
+        public static async Task<IResult> RevokeV1(ISender sender, HttpContext httpContext)
+        {
+            var AccessToken = await httpContext.GetTokenAsync("access_token");
 
-        //}
+            var result = await sender.Send(new Contract.Services.V1.Identity.Command.RevokeTokenCommand(AccessToken));
+
+            if (result.IsFailure)
+                return HandlerFailure(result);
+
+            return Results.Ok(result);
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace DistributedSystem.Presentation.APIs.Identity
 
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            var group1 = app.NewVersionedApi("Authentication")
+            var group1 = app.NewVersionedApi("authentication")
                 .MapGroup(BaseUrl).HasApiVersion(1).RequireAuthorization();
 
             group1.MapPost("login", AuthenticationV1).AllowAnonymous();

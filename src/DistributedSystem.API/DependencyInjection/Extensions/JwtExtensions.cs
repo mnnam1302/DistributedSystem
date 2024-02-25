@@ -1,4 +1,5 @@
-﻿using DistributedSystem.Infrastructure.DependencyInjection.Options;
+﻿using DistributedSystem.API.Attributes;
+using DistributedSystem.Infrastructure.DependencyInjection.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -55,10 +56,14 @@ namespace DistributedSystem.API.DependencyInjection.Extensions
                         return Task.CompletedTask;
                     }
                 };
+
+                options.EventsType = typeof(CustomJwtBearerEvents);
             });
 
 
             services.AddAuthorization();
+            // Custom JwtBearerEvents to check token in Redis => In case, token has been revoked
+            services.AddScoped<CustomJwtBearerEvents>();
         }
     }
 }

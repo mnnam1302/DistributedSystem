@@ -15,7 +15,6 @@
   <ItemGroup>
     <Folder Include="DependencyInjection\Options\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="UseCases\V1\Commands\Identity\" />
   </ItemGroup>
 
   <ItemGroup>
