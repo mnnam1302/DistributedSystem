@@ -3,9 +3,8 @@
     public interface IValidationResult
     {
         public static readonly Error ValidationError = new(
-            "Error.Validation",
-            "The specific result value is invalid.");
-
+            "ValidationError",
+            "A validation problem occurred.");
         Error[] Errors { get; }
     }
 }

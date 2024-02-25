@@ -54,12 +54,17 @@ namespace DistributedSystem.Application.Behaviors
 
             // Read more: https://learn.microsoft.com/en-us/dotnet/api/system.type.makegenerictype?view=net-8.0#system-type-makegenerictype(system-type())
 
-            //object validationResult = typeof(ValidationResult<>)
-            object validationResult = typeof(ValidationResult)
+            //object validationResult = typeof(ValidationResult)
+            //    .GetGenericTypeDefinition()
+            //    .MakeGenericType(typeof(TResult).GenericTypeArguments[0])
+            //    .GetMethod(nameof(ValidationResult.WithErrors)) !
+            //    .Invoke(null, new object[] { errors }) !;
+
+            object validationResult = typeof(ValidationResult<>)
                 .GetGenericTypeDefinition()
                 .MakeGenericType(typeof(TResult).GenericTypeArguments[0])
                 .GetMethod(nameof(ValidationResult.WithErrors)) !
-                .Invoke(null, new object[] { errors }) !;
+                .Invoke(null, new object?[] { errors }) !;
 
             return (TResult)validationResult;
         }

@@ -2,6 +2,7 @@ using Carter;
 using DistributedSystem.API.DependencyInjection.Extensions;
 using DistributedSystem.API.Middleware;
 using DistributedSystem.Application.DependencyInjection.Extensions;
+using DistributedSystem.Infrastructure.DependencyInjection.Extensions;
 using DistributedSystem.Persistence.DependencyInjection.Extensions;
 using DistributedSystem.Persistence.DependencyInjection.Options;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
@@ -21,7 +22,19 @@ builder.Logging
     .ClearProviders()
     .AddSerilog();
 
+builder.Services.AddInfrastructureServices();
+builder.Services.AddRedisService(builder.Configuration);
+
 builder.Host.UseSerilog();
+
+// Add Jwt Authentication => After, app.UseAuthentication(); app.UseAuthorization();
+builder.Services.AddJwtAuthentication(builder.Configuration);
+
+// Read more: use for situation that put Controller API at Presentation intead of API
+//builder.
+//    Services
+//    .AddControllers()
+//    .AddApplicationPart(DistributedSystem.Persistence.AssemblyReference.Assembly);
 
 builder.Services.AddConfigureMediatR();
 builder.Services.AddConfigureAutoMapper();
@@ -62,8 +75,6 @@ var app = builder.Build();
 // Using middleware
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-// Add API endpoint with Carter module
-app.MapCarter();
 
 // Configure the HTTP request pipeline.
 if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
@@ -71,9 +82,14 @@ if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
 
 //app.UseHttpsRedirection();
 
-//app.UseAuthorization();
+app.UseAuthentication(); // This to need added before UseAuthorization
+app.UseAuthorization();
 
 //app.MapControllers();
+
+// Add API endpoint with Carter module
+app.MapCarter(); // Must be after authenticatio and authorization
+
 
 try
 {

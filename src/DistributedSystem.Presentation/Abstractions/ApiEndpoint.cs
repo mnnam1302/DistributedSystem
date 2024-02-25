@@ -14,7 +14,8 @@ namespace DistributedSystem.Presentation.Abstractions
                     Results.BadRequest(
                         CreateProblemDetails(
                             "Validation Error", StatusCodes.Status400BadRequest,
-                            result.Error)),
+                            result.Error,
+                            validationResult.Errors)),
                 _ =>
                     Results.BadRequest(
                         CreateProblemDetails(

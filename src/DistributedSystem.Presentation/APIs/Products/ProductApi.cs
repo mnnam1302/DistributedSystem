@@ -20,7 +20,7 @@ namespace DistributedSystem.Presentation.APIs.Products
             #region ========= Version 1 =========
 
             var group1 = app.NewVersionedApi("products")
-                .MapGroup(BaseUrl).HasApiVersion(1);
+                .MapGroup(BaseUrl).HasApiVersion(1).RequireAuthorization();
 
             group1.MapPost(string.Empty, CreateProductsV1);
             group1.MapGet(string.Empty, GetProductsV1);
@@ -76,7 +76,6 @@ namespace DistributedSystem.Presentation.APIs.Products
             var result = await sender.Send(new CommandV1.Command.DeleteProductCommand(productId));
             return Results.Ok(result);
         }
-
 
         public static async Task<IResult> UpdateProductsV1(ISender sender, Guid productId, [FromBody] CommandV1.Command.UpdateProductCommand updateProduct)
         {
