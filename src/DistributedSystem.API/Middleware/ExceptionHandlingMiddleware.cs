@@ -54,7 +54,9 @@ namespace DistributedSystem.API.Middleware
                 // Dùng if else ở đây nó không hay, dùng switch nó clean hơn
 
                 // Trường hợp throw ở domain => Domain driven design
+                IdentityException.TokenException => StatusCodes.Status401Unauthorized,
                 ProductException.ProductFieldException => StatusCodes.Status406NotAcceptable, // Should be remove later
+
                 BadRequestException => StatusCodes.Status400BadRequest,
                 NotFoundException => StatusCodes.Status404NotFound,
                 //Application.Exceptions.ValidationException => StatusCodes.Status422UnprocessableEntity,

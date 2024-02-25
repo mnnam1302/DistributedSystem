@@ -37,7 +37,7 @@ namespace DistributedSystem.Infrastructure.Caching
             return value;
         }
 
-        public async Task SetAsync<T>(string key, T value, TimeSpan? expiry = null, CancellationToken cancellationToken = default) where T : class
+        public async Task SetAsync<T>(string key, T value, CancellationToken cancellationToken = default) where T : class
         {
             string cacheValue = JsonSerializer.Serialize(value);
             await _distributedCache.SetStringAsync(key, cacheValue, cancellationToken);

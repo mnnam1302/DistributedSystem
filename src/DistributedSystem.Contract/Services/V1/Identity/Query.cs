@@ -7,6 +7,6 @@ namespace DistributedSystem.Contract.Services.V1.Identity
     {
         public record GetLoginQuery(string Email, string Password) : IQuery<Response.Authenticated>;
 
-        public record GetTokenQuery(string? AccessToken, string? RefreshToken) : IQuery<Response.Authenticated>;
+        public record TokenQuery(string? AccessToken, string? RefreshToken) : IQuery<Response.Authenticated>;
     }
 }

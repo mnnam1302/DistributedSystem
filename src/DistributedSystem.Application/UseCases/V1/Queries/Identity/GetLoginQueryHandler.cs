@@ -9,10 +9,12 @@ namespace DistributedSystem.Application.UseCases.V1.Queries.Identity
     public class GetLoginQueryHandler : IQueryHandler<Query.GetLoginQuery, Response.Authenticated>
     {
         private readonly IJwtTokenService _jwtTokenService;
+        private readonly ICacheService _cacheService;
 
-        public GetLoginQueryHandler(IJwtTokenService jwtTokenService)
+        public GetLoginQueryHandler(IJwtTokenService jwtTokenService, ICacheService cacheService)
         {
             _jwtTokenService = jwtTokenService;
+            _cacheService = cacheService;
         }
 
         public async Task<Result<Response.Authenticated>> Handle(Query.GetLoginQuery request, CancellationToken cancellationToken)
@@ -34,8 +36,12 @@ namespace DistributedSystem.Application.UseCases.V1.Queries.Identity
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
-                RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(5)
+                RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5)
             };
+
+            // Caching result logging
+            await _cacheService.SetAsync(request.Email, result);
+
 
             return Result.Success(result);
         }

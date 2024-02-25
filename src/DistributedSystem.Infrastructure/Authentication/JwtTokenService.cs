@@ -67,9 +67,9 @@ namespace DistributedSystem.Infrastructure.Authentication
             // Lỡ ngta fake rồi sao?
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = false, // you might want to validate the audience and issuer depending on your use case
-                ValidateAudience = false,
-                ValidateLifetime = true, // here we are saying that we don't care about the token's expiration date
+                ValidateAudience = false, //you might want to validate the audience and issuer depending on your use case
+                ValidateIssuer = false,
+                ValidateLifetime = false, //here we are saying that we don't care about the token's expiration date
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Key),
                 ClockSkew = TimeSpan.Zero
