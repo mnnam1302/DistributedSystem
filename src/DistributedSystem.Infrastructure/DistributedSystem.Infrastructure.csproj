@@ -20,4 +20,9 @@
     <ProjectReference Include="..\DistributedSystem.Application\DistributedSystem.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Consumer\MessageBus\Consumers\Commands\" />
+    <Folder Include="Consumer\UseCases\Commands\" />
+  </ItemGroup>
+
 </Project>

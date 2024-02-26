@@ -150,10 +150,10 @@ namespace DistributedSystem.Infrastructure.DependencyInjection.Extensions
             services.AddQuartzHostedService();
         }
 
-        //public static void AddMediatRInfrastructure(this IServiceCollection services)
-        //{
-        //    // Tại sao ở đây lại có thêm Validator => MesssageBusOptions có các ràng buộc
-        //    services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(AssemblyReference.Assembly));
-        //}
+        public static void AddMediatRInfrastructure(this IServiceCollection services)
+        {
+            // Tại sao ở đây lại có thêm Validator => MesssageBusOptions có các ràng buộc
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(AssemblyReference.Assembly));
+        }
     }
 }
