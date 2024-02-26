@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using MassTransit;
 
 namespace DistributedSystem.Contract.Abstractions.Message
 {
-    public interface IDomainEvent : INotification
+    [ExcludeFromTopology]
+    public interface IDomainEvent
     {
         public Guid IdEvent { get; init; }
     }

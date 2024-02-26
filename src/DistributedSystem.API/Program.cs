@@ -58,11 +58,11 @@ builder.Services.AddJwtAuthenticationAPI(builder.Configuration);
 builder.Services.AddMediatRApplication();
 builder.Services.AddAutoMapperApplication();
 
-
-builder.Services.AddServicesInfrastructure();
-builder.Services.AddRedisInfrastructure(builder.Configuration);
+// Configure masstransit rabbitmq
 builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);
 builder.Services.AddQuartzInfrastructure();
+builder.Services.AddServicesInfrastructure();
+builder.Services.AddRedisInfrastructure(builder.Configuration);
 
 
 // Configure Options and SQL =>  remember mapcarter

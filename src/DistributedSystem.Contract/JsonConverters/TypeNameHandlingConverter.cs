@@ -24,6 +24,6 @@ namespace DistributedSystem.Contract.JsonConverters
         private static bool IsMassTransitOrSystemType(Type type)
             => (type.Assembly.FullName?.Contains(nameof(MassTransit)) ?? false) ||
                 type.Assembly.IsDynamic ||
-                type.Assembly == typeof(object).Assembly
+                type.Assembly == typeof(object).Assembly;
     }
 }
