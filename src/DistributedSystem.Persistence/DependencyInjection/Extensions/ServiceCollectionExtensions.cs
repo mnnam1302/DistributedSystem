@@ -110,7 +110,7 @@ namespace DistributedSystem.Persistence.DependencyInjection.Extensions
             services.AddTransient(typeof(IRepositoryBaseDbContext<,,>), typeof(RepositoryBaseDbContext<,,>));
         }
 
-        public static OptionsBuilder<SqlServerRetryOptions> ConfigureSqlServerRetryOptions(this IServiceCollection services, IConfiguration section)
+        public static OptionsBuilder<SqlServerRetryOptions> ConfigureSqlServerRetryOptionsPersistence(this IServiceCollection services, IConfiguration section)
         {
             // Read more: options pattern - https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options?view=aspnetcore-8.0#bind-hierarchical-configuration
             // OptionsBuilder API
