@@ -1,6 +1,7 @@
 ﻿using DistributedSystem.Application.Abstractions;
 using DistributedSystem.Contract.JsonConverters;
 using DistributedSystem.Infrastructure.Authentication;
+using DistributedSystem.Infrastructure.BackgroundJobs;
 using DistributedSystem.Infrastructure.Caching;
 using DistributedSystem.Infrastructure.DependencyInjection.Options;
 using DistributedSystem.Infrastructure.PipelineObservers;
@@ -8,6 +9,7 @@ using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Quartz;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -39,7 +41,6 @@ namespace DistributedSystem.Infrastructure.DependencyInjection.Extensions
 
             var messageBusOptions = new MesssageBusOptions();
             configuration.GetSection(nameof(MesssageBusOptions)).Bind(messageBusOptions);
-
 
             services.AddMassTransit(cfg =>
             {
@@ -121,5 +122,38 @@ namespace DistributedSystem.Infrastructure.DependencyInjection.Extensions
 
             return services;
         }
+
+        // Configure Job
+        public static void AddQuartzInfrastructure(this IServiceCollection services)
+        {
+            services.AddQuartz(configure =>
+            {
+                var jobKey = new JobKey(nameof(ProducerOutboxMessageJob));
+
+                // Add job and trigger for this job
+                // Mục đích: mỗi lần mình sẽ Push 20 message lên RabbitMQ
+                configure
+                    .AddJob<ProducerOutboxMessageJob>(jobKey)
+                    .AddTrigger(trigger =>
+                    {
+                        trigger.ForJob(jobKey)
+                        .WithSimpleSchedule(schedule =>
+                        {
+                            schedule.WithIntervalInSeconds(100);
+                            schedule.RepeatForever();
+                        });
+                    });
+
+                configure.UseMicrosoftDependencyInjectionJobFactory();
+            });
+
+            services.AddQuartzHostedService();
+        }
+
+        //public static void AddMediatRInfrastructure(this IServiceCollection services)
+        //{
+        //    // Tại sao ở đây lại có thêm Validator => MesssageBusOptions có các ràng buộc
+        //    services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(AssemblyReference.Assembly));
+        //}
     }
 }

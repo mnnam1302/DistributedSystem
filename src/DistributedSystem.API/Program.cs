@@ -61,6 +61,8 @@ builder.Services.AddAutoMapperApplication();
 
 builder.Services.AddServicesInfrastructure();
 builder.Services.AddRedisInfrastructure(builder.Configuration);
+builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);
+builder.Services.AddQuartzInfrastructure();
 
 
 // Configure Options and SQL =>  remember mapcarter
