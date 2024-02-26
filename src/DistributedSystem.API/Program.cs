@@ -13,53 +13,34 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Add configuration
 
-// Add Serilog
+
 Log.Logger = new LoggerConfiguration().ReadFrom
     .Configuration(builder.Configuration)
     .CreateLogger();
 
+// Add Serilog
 builder.Logging
     .ClearProviders()
     .AddSerilog();
 
-builder.Services.AddInfrastructureServices();
-builder.Services.AddRedisService(builder.Configuration);
-
 builder.Host.UseSerilog();
 
-// Add Jwt Authentication => After, app.UseAuthentication(); app.UseAuthorization();
-builder.Services.AddJwtAuthentication(builder.Configuration);
 
-// Read more: use for situation that put Controller API at Presentation intead of API
+// Add Carter module
+builder.Services.AddCarter();
+
+// Read more: Use in case for Controller API DistributedSystem.Presentation
 //builder.
 //    Services
 //    .AddControllers()
 //    .AddApplicationPart(DistributedSystem.Persistence.AssemblyReference.Assembly);
-
-builder.Services.AddConfigureMediatR();
-builder.Services.AddConfigureAutoMapper();
-
-// Add Middleware => Remember use middleware
-builder.Services.AddTransient<ExceptionHandlingMiddleware>();
-
-// Configure Options and SQL =>  remember mapcarter
-builder.Services.AddInterceptorDbContext();
-
-// Pass Configuration good - builder.Configuration.GetSection(nameof(SqlServerRetryOptions))
-// Not hard code at ConfigureSqlServerRetryOptions at Persistence ** My ERROR
-builder.Services.ConfigureSqlServerRetryOptions(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
-builder.Services.AddSqlConfiguration();
-builder.Services.AddRepositoryBaseConfiguration();
-
-// Add Carter module
-builder.Services.AddCarter();
 
 // Add Swagger
 builder.Services
     .AddSwaggerGenNewtonsoftSupport()
     .AddFluentValidationRulesToSwagger()
     .AddEndpointsApiExplorer()
-    .AddSwagger();
+    .AddSwaggerAPI();
 
 // Add API versioning
 builder.Services
@@ -70,25 +51,53 @@ builder.Services
         options.SubstituteApiVersionInUrl = true;
     });
 
+// Add Jwt Authentication => After, app.UseAuthentication(); app.UseAuthorization();
+builder.Services.AddJwtAuthenticationAPI(builder.Configuration);
+
+
+builder.Services.AddMediatRApplication();
+builder.Services.AddAutoMapperApplication();
+
+// Configure masstransit rabbitmq
+builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);
+builder.Services.AddQuartzInfrastructure();
+builder.Services.AddMediatRInfrastructure();
+builder.Services.AddServicesInfrastructure();
+builder.Services.AddRedisInfrastructure(builder.Configuration);
+
+
+// Configure Options and SQL =>  remember mapcarter
+// Pass Configuration good - builder.Configuration.GetSection(nameof(SqlServerRetryOptions))
+// Not hard code at ConfigureSqlServerRetryOptions at Persistence ** My ERROR
+builder.Services.AddInterceptorPersistence();
+builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
+builder.Services.AddSqlPersistence();
+builder.Services.AddRepositoryPersistence();
+
+
+// Add Middleware => Remember use middleware
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+
+
 var app = builder.Build();
 
 // Using middleware
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-
-// Configure the HTTP request pipeline.
-if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
-    app.ConfigureSwagger(); // => After MapCarter => Show Version
-
-//app.UseHttpsRedirection();
+//app.UseHttpsRedirection(); // => Use in case for production
 
 app.UseAuthentication(); // This to need added before UseAuthorization
 app.UseAuthorization();
 
-//app.MapControllers();
+//app.MapControllers(); // Use in case Controller API
 
 // Add API endpoint with Carter module
 app.MapCarter(); // Must be after authenticatio and authorization
+
+
+// Configure the HTTP request pipeline.
+if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
+    app.UseSwaggerAPI(); // => After MapCarter => Show Version
 
 
 try
