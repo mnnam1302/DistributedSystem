@@ -64,6 +64,7 @@ builder.Services.AddQuartzInfrastructure();
 builder.Services.AddMediatRInfrastructure();
 builder.Services.AddServicesInfrastructure();
 builder.Services.AddRedisInfrastructure(builder.Configuration);
+builder.Services.ConfigureServicesInfrastructure(builder.Configuration);
 
 
 // Configure Options and SQL =>  remember mapcarter

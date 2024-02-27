@@ -6,17 +6,34 @@ using DistributedSystem.Infrastructure.Caching;
 using DistributedSystem.Infrastructure.DependencyInjection.Options;
 using DistributedSystem.Infrastructure.PipelineObservers;
 using MassTransit;
+using MassTransit.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Quartz;
 using System.ComponentModel;
+using System.Net.NetworkInformation;
 using System.Reflection;
 
 namespace DistributedSystem.Infrastructure.DependencyInjection.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+        public static void ConfigureServicesInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        {
+            // Using the options pattern is to bind the Position section and add it to the dependency injection service container
+            services.Configure<MongoDbSettings>(configuration.GetSection(nameof(MongoDbSettings)));
+            
+            // Using the preceding code, the following code reads the IMongoDbSettings options
+            // Mỗi khi IMongoDbSettings được DI thì nó mới gọi đến MongoDbSettings
+            services.AddSingleton<IMongoDbSettings>(serviceProvider =>
+                serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
+
+            // Đặt trong static class
+            //public const string DatabaseName = "acbdfvf";
+        }
+
         public static void AddServicesInfrastructure(this IServiceCollection services)
         {
             services.AddTransient<IJwtTokenService, JwtTokenService>();
@@ -139,7 +156,8 @@ namespace DistributedSystem.Infrastructure.DependencyInjection.Extensions
                         trigger.ForJob(jobKey)
                         .WithSimpleSchedule(schedule =>
                         {
-                            schedule.WithIntervalInSeconds(100);
+                            // Check lại Milisecond hay Microsecond - Trandong
+                            schedule.WithInterval(TimeSpan.FromMilliseconds(100));
                             schedule.RepeatForever();
                         });
                     });
