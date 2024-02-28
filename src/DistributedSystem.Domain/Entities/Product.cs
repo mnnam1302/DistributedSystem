@@ -19,8 +19,10 @@ namespace DistributedSystem.Domain.Entities
             // Tất cả code nằm chung một chỗ, sau này một thành viên nào không đọc kỹ về requirement, thì sẽ bị lỗi
             // Code centralized
             // Khi throw ra thì phải hướng nó ở Global Exception Handler => Hướng đúng lỗi => ExceptionHandlingMiddleware
-            if (name.Length > 10)
-                throw new ProductFieldException(nameof(Name));
+
+            // Refactor code => Đặt ở đây không hợp lý => Bản chất constructor chỉ nhận tham số và truyền vào những cái fields
+            //if (name.Length > 10)
+            //    throw new ProductFieldException(nameof(Name));
 
             Id = id;
             Name = name;
@@ -31,6 +33,9 @@ namespace DistributedSystem.Domain.Entities
         // Thằng này mới nên chưa có instance nào reference đến Create, ví dụ, instance.Create(...) => Không có => có static
         public static Product Create(Guid id, string name, decimal price, string description)
         {
+            if (name.Length > 50)
+                throw new ProductFieldException(nameof(Name));
+
             var product = new Product(id, name, price, description);
 
             // Khi Raise event , thì sẽ add class ProductCreated vào trong List
@@ -46,6 +51,9 @@ namespace DistributedSystem.Domain.Entities
         // Phải tham chiếu từ một đối tượng cụ thể
         public void Update(string name, decimal price, string description)
         {
+            if (name.Length > 50)
+                throw new ProductFieldException(nameof(Name));
+
             Name = name;
             Price = price;
             Description = description;
