@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Consumer\Abstractions\Repositories\" />
     <Folder Include="Consumer\MessageBus\Consumers\Commands\" />
     <Folder Include="Consumer\UseCases\Commands\" />
   </ItemGroup>

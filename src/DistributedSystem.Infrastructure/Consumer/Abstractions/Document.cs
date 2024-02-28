@@ -5,7 +5,7 @@ namespace DistributedSystem.Infrastructure.Consumer.Abstractions
 {
     public abstract class Document : IDocument
     {
-        public ObjectId Id { get; set; }
+        public ObjectId Id { get; set; } // ???
 
         public Guid DocumentId { get; set; } // ID cua SourceMessage: ProductId, CustomerId, OrderId,...
 

@@ -33,7 +33,7 @@ namespace DistributedSystem.Domain.Entities
         // Thằng này mới nên chưa có instance nào reference đến Create, ví dụ, instance.Create(...) => Không có => có static
         public static Product Create(Guid id, string name, decimal price, string description)
         {
-            if (name.Length > 10)
+            if (name.Length > 50)
                 throw new ProductFieldException(nameof(Name));
 
             var product = new Product(id, name, price, description);
@@ -51,7 +51,7 @@ namespace DistributedSystem.Domain.Entities
         // Phải tham chiếu từ một đối tượng cụ thể
         public void Update(string name, decimal price, string description)
         {
-            if (name.Length > 10)
+            if (name.Length > 50)
                 throw new ProductFieldException(nameof(Name));
 
             Name = name;

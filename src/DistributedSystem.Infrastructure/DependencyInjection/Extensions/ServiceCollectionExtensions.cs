@@ -3,6 +3,8 @@ using DistributedSystem.Contract.JsonConverters;
 using DistributedSystem.Infrastructure.Authentication;
 using DistributedSystem.Infrastructure.BackgroundJobs;
 using DistributedSystem.Infrastructure.Caching;
+using DistributedSystem.Infrastructure.Consumer.Abstractions.Repositories;
+using DistributedSystem.Infrastructure.Consumer.Repositories;
 using DistributedSystem.Infrastructure.DependencyInjection.Options;
 using DistributedSystem.Infrastructure.PipelineObservers;
 using MassTransit;
@@ -24,14 +26,19 @@ namespace DistributedSystem.Infrastructure.DependencyInjection.Extensions
         {
             // Using the options pattern is to bind the Position section and add it to the dependency injection service container
             services.Configure<MongoDbSettings>(configuration.GetSection(nameof(MongoDbSettings)));
-            
+
             // Using the preceding code, the following code reads the IMongoDbSettings options
             // Mỗi khi IMongoDbSettings được DI thì nó mới gọi đến MongoDbSettings
-            services.AddSingleton<IMongoDbSettings>(serviceProvider =>
-                serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
             // Đặt trong static class
             //public const string DatabaseName = "acbdfvf";
+            //public const string ConnectionString = "aBCDXYZ";
+
+            services.AddSingleton<IMongoDbSettings>(serviceProvider =>
+                serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
+
+
+            services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
         }
 
         public static void AddServicesInfrastructure(this IServiceCollection services)
