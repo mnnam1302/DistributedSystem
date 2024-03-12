@@ -3,6 +3,7 @@ using DistributedSystem.Contract.Abstractions.Shared;
 using DistributedSystem.Contract.Services.V1.Product;
 using DistributedSystem.Domain.Exceptions;
 using DistributedSystem.Infrastructure.Consumer.Abstractions.Repositories;
+using DistributedSystem.Infrastructure.Consumer.Exceptions;
 using DistributedSystem.Infrastructure.Consumer.Models;
 
 namespace DistributedSystem.Infrastructure.Consumer.UseCases.Events
@@ -45,7 +46,7 @@ namespace DistributedSystem.Infrastructure.Consumer.UseCases.Events
             //var product = await _productRepository.FindByIdAsync(request.Id.ToString()) 
             //    ?? throw new ProductException.ProductNotFoundException(request.Id);
             var product = await _productRepository.FindOneAsync(x => x.DocumentId == request.Id)
-                ?? throw new ArgumentNullException();
+                ?? throw new ConsumerProductException.ConsumerProductNotFoundException(request.Id);
 
             // Update Product
             product.Name = request.Name;
@@ -62,9 +63,9 @@ namespace DistributedSystem.Infrastructure.Consumer.UseCases.Events
         {
             // Find and delete a Product
             var product = await _productRepository.FindOneAsync(x => x.DocumentId == request.Id)
-                ?? throw new ArgumentNullException();
+                ?? throw new ConsumerProductException.ConsumerProductNotFoundException(request.Id);
 
-            // Xóa theo Id là SAI
+            // Xóa theo Id là SAIs
             //await _productRepository.DeleteByIdAsync(request.Id.ToString());
 
             await _productRepository.DeleteOneAsync(x => x.DocumentId == request.Id);

@@ -20,26 +20,25 @@ namespace DistributedSystem.Persistence.Repositories
             _dbContext?.Dispose();
         }
 
-        public IQueryable<TEntity> FindAll(Expression<Func<TEntity, bool>>? predicate = null, params Expression<Func<TEntity, object>>[] includeProperties)
+        public IQueryable<TEntity> FindAll(Expression<Func<TEntity, bool>>? predicate = null,
+        params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            IQueryable<TEntity> items = _dbContext.Set<TEntity>().AsNoTracking(); // Important to use AsNoTracking to improve performance - Always include AsNoTracking for Query Side
-
+            IQueryable<TEntity> items = _dbContext.Set<TEntity>().AsNoTracking(); // Importance Always include AsNoTracking for Query Side
             if (includeProperties != null)
-            {
-                foreach(var includeProperty in includeProperties)
-                {
+                foreach (var includeProperty in includeProperties)
                     items = items.Include(includeProperty);
-                }
-            }
 
-            if (predicate != null)
-                items.Where(predicate);
+            if (predicate is not null)
+                items = items.Where(predicate);
 
             return items;
         }
 
         public async Task<TEntity> FindByIdAsync(TKey id, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includeProperties)
         {
+            //return await _dbContext.Set<TEntity>().AsNoTracking()
+            //    .AsNoTracking()
+            //    .SingleOrDefaultAsync(x => x.Id.Equals(id), cancellationToken);
             return await FindAll(null, includeProperties)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(x => x.Id.Equals(id), cancellationToken);

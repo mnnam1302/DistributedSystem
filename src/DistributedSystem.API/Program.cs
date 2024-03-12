@@ -33,7 +33,7 @@ builder.Services.AddCarter();
 //builder.
 //    Services
 //    .AddControllers()
-//    .AddApplicationPart(DistributedSystem.Persistence.AssemblyReference.Assembly);
+//    .AddApplicationPart(DistributedSystem.Presentation.AssemblyReference.Assembly);
 
 // Add Swagger
 builder.Services

@@ -1,4 +1,6 @@
 ﻿using Carter;
+using DistributedSystem.Contract.Enumerations;
+using DistributedSystem.Contract.Extensions;
 using DistributedSystem.Presentation.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -7,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
 using CommandV1 = DistributedSystem.Contract.Services.V1.Product;
+
 //using CommandV2 = DistributedSystem.Contract.Services.V2.Product;
 
 namespace DistributedSystem.Presentation.APIs.Products
@@ -20,7 +23,7 @@ namespace DistributedSystem.Presentation.APIs.Products
             #region ========= Version 1 =========
 
             var group1 = app.NewVersionedApi("products")
-                .MapGroup(BaseUrl).HasApiVersion(1).RequireAuthorization();
+                .MapGroup(BaseUrl).HasApiVersion(1); //.RequireAuthorization();
 
             group1.MapPost(string.Empty, CreateProductsV1);
             group1.MapGet(string.Empty, GetProductsV1);
@@ -29,7 +32,6 @@ namespace DistributedSystem.Presentation.APIs.Products
             group1.MapPut("{productId}", UpdateProductsV1);
 
             #endregion ========= Version 1 =========
-
 
             #region ========= Version 2 =========
 
@@ -59,9 +61,38 @@ namespace DistributedSystem.Presentation.APIs.Products
             return Results.Ok(result);
         }
 
-        public static async Task<IResult> GetProductsV1(ISender sender)
+        public static async Task<IResult> GetProductsV1(ISender sender,
+            string? searchTerm = null,
+            string? sortColumn = null,
+            string? sortOrder = null,
+            string? sortColumnAndOrder = null,
+            int pageIndex = 1,
+            int pageSize = 10)
         {
-            var result = await sender.Send(new CommandV1.Query.GetProductsQuery());
+            // Handle three case
+            // If null => default Descending
+            // If Asc => Ascending
+            // Else => Descending
+            //var sort = !string.IsNullOrWhiteSpace(sortOrder)
+            //    ? sortOrder.Trim().ToLower().Equals("asc")
+            //    ? SortOrder.Ascending : SortOrder.Descending : SortOrder.Descending;
+            // Actually, => Descending on CreatedDate column
+            // => Refactor coded
+
+            // Expand and Test
+            // Moreover, I'd like Column-Order, Column-Order, Column-Order,....
+            // Only test Happy Case => NOT GOOD
+            // Nice: Column-Order, Column-Order, Column-Order,....
+            // Bad: acbdgbgf-njgbnjg, bngjnbjg, hbgnjbg, nbjgnjbg
+            // Trở thành => Id-Descending, Id-Descending => Duplicate => Sort 2 lần không nên
+            // Dictionary giải quyết: vì key
+
+            var result = await sender.Send(new CommandV1.Query.GetProductsQuery(searchTerm, sortColumn,
+                SortOrderExtension.ConvertStringToSortOrder(sortOrder),
+                SortOrderExtension.ConvertStringToSortOrderV2(sortColumnAndOrder),
+                pageIndex,
+                pageSize));
+
             return Results.Ok(result);
         }
 
@@ -86,10 +117,5 @@ namespace DistributedSystem.Presentation.APIs.Products
         }
 
         #endregion ========= Version 1 =========
-
-
-        #region ========= Version 2 =========
-
-        #endregion ========= Version 2 =========
     }
 }

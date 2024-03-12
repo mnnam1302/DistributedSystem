@@ -1,4 +1,5 @@
 ﻿using DistributedSystem.Domain.Exceptions;
+using DistributedSystem.Infrastructure.Consumer.Exceptions;
 using System.Text.Json;
 namespace DistributedSystem.API.Middleware
 {
@@ -49,6 +50,9 @@ namespace DistributedSystem.API.Middleware
         private static int GetStatusCode(Exception exception) =>
             exception switch
             {
+                // Consumer
+                ConsumerProductException.ConsumerProductNotFoundException => StatusCodes.Status404NotFound,
+
                 // Những exception mà mình tự định nghĩa
                 // Ví dụ BadRequest trả về 400
                 // Dùng if else ở đây nó không hay, dùng switch nó clean hơn
@@ -56,7 +60,7 @@ namespace DistributedSystem.API.Middleware
                 // Trường hợp throw ở domain => Domain driven design
                 IdentityException.TokenException => StatusCodes.Status401Unauthorized,
                 ProductException.ProductFieldException => StatusCodes.Status406NotAcceptable, // Should be remove later
-
+                
                 BadRequestException => StatusCodes.Status400BadRequest,
                 NotFoundException => StatusCodes.Status404NotFound,
                 //Application.Exceptions.ValidationException => StatusCodes.Status422UnprocessableEntity,
