@@ -31,6 +31,40 @@ namespace DistributedSystem.Persistence.Configurations
                 .WithOne()
                 .HasForeignKey(aif => aif.ActionId)
                 .IsRequired();
+
+            var actions = new List<Action>()
+            {
+                new Action()
+                {
+                    Id = "9c955674-7377-4b52-b5f4-82eab10fe6ed",
+                    Name = "GET",
+                    SortOrder = 1,
+                    IsActive = true,
+                },
+                new Action()
+                {
+                    Id = "3e700c49-37ee-4baa-8384-b1fe9f95f822",
+                    Name = "POST",
+                    SortOrder = 1,
+                    IsActive = true,
+                },
+                new Action()
+                {
+                    Id = "51e900fa-9445-486f-bd27-47bb1684673d",
+                    Name = "PUT",
+                    SortOrder = 1,
+                    IsActive = true,
+                },
+                new Action()
+                {
+                    Id = "8892ffdc-c7af-49cd-af76-d221c6642799",
+                    Name = "DELETE",
+                    SortOrder = 1,
+                    IsActive = true,
+                }
+            };
+
+            builder.HasData(actions);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DistributedSystem.Domain.Abstractions.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace DistributedSystem.Domain.Entities.Identity
 {

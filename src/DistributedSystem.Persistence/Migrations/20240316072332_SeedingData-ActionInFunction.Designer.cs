@@ -4,6 +4,7 @@ using DistributedSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DistributedSystem.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240316072332_SeedingData-ActionInFunction")]
+    partial class SeedingDataActionInFunction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -367,42 +370,30 @@ namespace DistributedSystem.Persistence.Migrations
                         {
                             RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
                             FunctionId = "1156b66d-ef2f-471e-9e37-44dfb2aea415",
-                            ActionId = "3e700c49-37ee-4baa-8384-b1fe9f95f822"
+                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
+                        },
+                        new
+                        {
+                            RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
+                            FunctionId = "1b8c6511-d1db-4c01-b65a-1c60ec0bf90c",
+                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
+                        },
+                        new
+                        {
+                            RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
+                            FunctionId = "401b7a1d-6489-4b0e-9dc7-a27277d6e3dc",
+                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
                         },
                         new
                         {
                             RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
                             FunctionId = "8344a326-5e0f-4389-a251-832aae182286",
-                            ActionId = "51e900fa-9445-486f-bd27-47bb1684673d"
+                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
                         },
                         new
                         {
                             RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
                             FunctionId = "e4bb65d0-3ff6-4182-af22-33a91e844af9",
-                            ActionId = "8892ffdc-c7af-49cd-af76-d221c6642799"
-                        },
-                        new
-                        {
-                            RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
-                            FunctionId = "1b8c6511-d1db-4c01-b65a-1c60ec0bf90c",
-                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
-                        },
-                        new
-                        {
-                            RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
-                            FunctionId = "401b7a1d-6489-4b0e-9dc7-a27277d6e3dc",
-                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
-                        },
-                        new
-                        {
-                            RoleId = new Guid("0d395fbd-3271-44a2-b147-4b77be0464e6"),
-                            FunctionId = "1b8c6511-d1db-4c01-b65a-1c60ec0bf90c",
-                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
-                        },
-                        new
-                        {
-                            RoleId = new Guid("0d395fbd-3271-44a2-b147-4b77be0464e6"),
-                            FunctionId = "401b7a1d-6489-4b0e-9dc7-a27277d6e3dc",
                             ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
                         });
                 });
