@@ -6,6 +6,7 @@ using DistributedSystem.Infrastructure.Caching;
 using DistributedSystem.Infrastructure.Consumer.Abstractions.Repositories;
 using DistributedSystem.Infrastructure.Consumer.Repositories;
 using DistributedSystem.Infrastructure.DependencyInjection.Options;
+using DistributedSystem.Infrastructure.PasswordHasher;
 using DistributedSystem.Infrastructure.PipelineObservers;
 using MassTransit;
 using MassTransit.Configuration;
@@ -45,6 +46,7 @@ namespace DistributedSystem.Infrastructure.DependencyInjection.Extensions
         {
             services.AddTransient<IJwtTokenService, JwtTokenService>();
             services.AddTransient<ICacheService, CacheService>();
+            services.AddTransient<IPasswordHasherService, PasswordHasherService>();
         }
 
         public static void AddRedisInfrastructure(this IServiceCollection services, IConfiguration configuration)

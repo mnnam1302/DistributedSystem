@@ -9,5 +9,13 @@
             {
             }
         }
+
+        public class UserExistsException : DomainException
+        {
+            public UserExistsException(string message) 
+                : base("User Exception", message)
+            {
+            }
+        }
     }
 }

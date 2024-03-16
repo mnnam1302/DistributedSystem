@@ -1,9 +1,12 @@
-﻿using System.Linq.Expressions;
+﻿using DistributedSystem.Domain.Abstractions.Entities;
+using System.Linq.Expressions;
 
 namespace DistributedSystem.Domain.Abstractions.Repositories
 {
+    //public interface IRepositoryBase<TEntity, in TKey>
+    //    where TEntity : class
     public interface IRepositoryBase<TEntity, in TKey>
-        where TEntity : class
+    where TEntity : class, IEntity<TKey>
         // => Tran dong: In implementation should be Entity<TKey> => Why?
         // Tại sao mình không define nó ở đây luôn? TEntity : Entity<TKey> mà chỉ để TEntity : class
         // => Nếu define nó ở đây thì những class khác mà cần. Nếu chúng ta có thêm một Entity hay DomainEntity
