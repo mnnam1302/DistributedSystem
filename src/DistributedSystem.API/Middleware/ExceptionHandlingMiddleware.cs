@@ -53,21 +53,22 @@ namespace DistributedSystem.API.Middleware
                 // Consumer
                 ConsumerProductException.ConsumerProductNotFoundException => StatusCodes.Status404NotFound,
 
-                // Những exception mà mình tự định nghĩa
-                // Ví dụ BadRequest trả về 400
-                // Dùng if else ở đây nó không hay, dùng switch nó clean hơn
-
-                // Trường hợp throw ở domain => Domain driven design
+                // Identity
                 IdentityException.TokenException => StatusCodes.Status401Unauthorized,
                 IdentityException.UserExistsException => StatusCodes.Status400BadRequest,
+                IdentityException.UserByEmailNotFoundException => StatusCodes.Status404NotFound,
 
-                ProductException.ProductFieldException => StatusCodes.Status406NotAcceptable, // Should be remove later
+                // Product
+                // Should be remove later
+                ProductException.ProductFieldException => StatusCodes.Status406NotAcceptable, 
                 
+                // Domain
                 BadRequestException => StatusCodes.Status400BadRequest,
                 NotFoundException => StatusCodes.Status404NotFound,
                 //Application.Exceptions.ValidationException => StatusCodes.Status422UnprocessableEntity,
                 //FluentValidation.ValidationException => StatusCodes.Status422UnprocessableEntity, // Comment because ValidationDefaultBehavior is not used
                 FormatException => StatusCodes.Status422UnprocessableEntity,
+                InvalidOperationException => StatusCodes.Status500InternalServerError,
                 // Tường hợp mặc định, nếu không có th nào map ở trên thì trả về 500
                 _ => StatusCodes.Status500InternalServerError
             };

@@ -96,7 +96,7 @@ namespace DistributedSystem.Presentation.APIs.Products
 
             return Results.Ok(result);
         }
-
+        
         public static async Task<IResult> GetProductsByIdV1(ISender sender, Guid productId)
         {
             var result = await sender.Send(new CommandV1.Query.GetProductByIdQuery(productId));

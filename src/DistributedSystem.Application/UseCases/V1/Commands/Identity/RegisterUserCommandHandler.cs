@@ -30,7 +30,7 @@ namespace DistributedSystem.Application.UseCases.V1.Commands.Identity
             var passwordSalt = _passwordHasherService.GenerateSalt();
             var passwordHash = _passwordHasherService.HashPassword(request.Password, passwordSalt);
 
-            var user = AppUser.Create(Guid.NewGuid(), request.FirstName, request.LastName, request.DateOfBirth, request.Email, passwordHash, passwordSalt);
+            var user = AppUser.Create(Guid.NewGuid(), request.FirstName, request.LastName, request.DateOfBirth, request.PhoneNumber, request.Email, passwordHash, passwordSalt);
 
             _userRepository.Add(user);
 
