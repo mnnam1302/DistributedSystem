@@ -17,6 +17,7 @@ namespace DistributedSystem.Persistence.Configurations
             builder.Property(x => x.IsHeadOfDepartment).HasDefaultValue(false);
             builder.Property(x => x.ManagerId).HasDefaultValue(null);
             builder.Property(x => x.IsReceipient).HasDefaultValue(-1);
+            builder.Property(x => x.PasswordSalt).IsRequired();
 
             // Each User can have many UserClaims
             builder.HasMany(e => e.Claims)

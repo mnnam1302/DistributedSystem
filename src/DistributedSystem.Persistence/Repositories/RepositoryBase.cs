@@ -5,8 +5,10 @@ using System.Linq.Expressions;
 
 namespace DistributedSystem.Persistence.Repositories
 {
+    //public class RepositoryBase<TEntity, TKey> : IRepositoryBase<TEntity, TKey>, IDisposable
+    //    where TEntity : Entity<TKey>
     public class RepositoryBase<TEntity, TKey> : IRepositoryBase<TEntity, TKey>, IDisposable
-        where TEntity : Entity<TKey>
+    where TEntity : class, IEntity<TKey>
     {
         private readonly ApplicationDbContext _dbContext;
 

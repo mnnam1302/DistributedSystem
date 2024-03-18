@@ -4,6 +4,7 @@ using DistributedSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DistributedSystem.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240315093018_SeedingData-Permission")]
+    partial class SeedingDataPermission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,29 +56,15 @@ namespace DistributedSystem.Persistence.Migrations
                         {
                             Id = "9c955674-7377-4b52-b5f4-82eab10fe6ed",
                             IsActive = true,
-                            Name = "GET",
+                            Name = "Allowed",
                             SortOrder = 1
                         },
                         new
                         {
-                            Id = "3e700c49-37ee-4baa-8384-b1fe9f95f822",
+                            Id = "c2195e73-ce36-489f-a628-419c252bbcb6",
                             IsActive = true,
-                            Name = "POST",
-                            SortOrder = 1
-                        },
-                        new
-                        {
-                            Id = "51e900fa-9445-486f-bd27-47bb1684673d",
-                            IsActive = true,
-                            Name = "PUT",
-                            SortOrder = 1
-                        },
-                        new
-                        {
-                            Id = "8892ffdc-c7af-49cd-af76-d221c6642799",
-                            IsActive = true,
-                            Name = "DELETE",
-                            SortOrder = 1
+                            Name = "Disallowed",
+                            SortOrder = 2
                         });
                 });
 
@@ -92,33 +81,6 @@ namespace DistributedSystem.Persistence.Migrations
                     b.HasIndex("FunctionId");
 
                     b.ToTable("ActionInFunctions", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            ActionId = "3e700c49-37ee-4baa-8384-b1fe9f95f822",
-                            FunctionId = "1156b66d-ef2f-471e-9e37-44dfb2aea415"
-                        },
-                        new
-                        {
-                            ActionId = "51e900fa-9445-486f-bd27-47bb1684673d",
-                            FunctionId = "8344a326-5e0f-4389-a251-832aae182286"
-                        },
-                        new
-                        {
-                            ActionId = "8892ffdc-c7af-49cd-af76-d221c6642799",
-                            FunctionId = "e4bb65d0-3ff6-4182-af22-33a91e844af9"
-                        },
-                        new
-                        {
-                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed",
-                            FunctionId = "1b8c6511-d1db-4c01-b65a-1c60ec0bf90c"
-                        },
-                        new
-                        {
-                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed",
-                            FunctionId = "401b7a1d-6489-4b0e-9dc7-a27277d6e3dc"
-                        });
                 });
 
             modelBuilder.Entity("DistributedSystem.Domain.Entities.Identity.AppRole", b =>
@@ -235,10 +197,6 @@ namespace DistributedSystem.Persistence.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -304,7 +262,7 @@ namespace DistributedSystem.Persistence.Migrations
                         {
                             Id = "1b8c6511-d1db-4c01-b65a-1c60ec0bf90c",
                             CssClass = "ProductApi",
-                            Name = "Retrieve all products",
+                            Name = "GetProductsV1",
                             ParentId = "13e2f21a-4283-4ff8-bb7a-096e7b89e0f0",
                             SortOrder = 2,
                             Url = "http://localhost:5000/api/v1/products"
@@ -313,16 +271,16 @@ namespace DistributedSystem.Persistence.Migrations
                         {
                             Id = "401b7a1d-6489-4b0e-9dc7-a27277d6e3dc",
                             CssClass = "ProductApi",
-                            Name = "Retrieve the details for product 1",
+                            Name = "GetProductsByIdV1",
                             ParentId = "13e2f21a-4283-4ff8-bb7a-096e7b89e0f0",
                             SortOrder = 2,
-                            Url = "http://localhost:5000/api/v1/products/1"
+                            Url = "http://localhost:5000/api/v1/products/{productId}"
                         },
                         new
                         {
                             Id = "1156b66d-ef2f-471e-9e37-44dfb2aea415",
                             CssClass = "ProductApi",
-                            Name = "Create a new product",
+                            Name = "CreateProductsV1",
                             ParentId = "13e2f21a-4283-4ff8-bb7a-096e7b89e0f0",
                             SortOrder = 2,
                             Url = "http://localhost:5000/api/v1/products"
@@ -331,19 +289,19 @@ namespace DistributedSystem.Persistence.Migrations
                         {
                             Id = "8344a326-5e0f-4389-a251-832aae182286",
                             CssClass = "ProductApi",
-                            Name = "Update the details of product 1 if it exists",
+                            Name = "UpdateProductsV1",
                             ParentId = "13e2f21a-4283-4ff8-bb7a-096e7b89e0f0",
                             SortOrder = 2,
-                            Url = "http://localhost:5000/api/v1/products/1"
+                            Url = "http://localhost:5000/api/v1/products/{productId}"
                         },
                         new
                         {
                             Id = "e4bb65d0-3ff6-4182-af22-33a91e844af9",
                             CssClass = "ProductApi",
-                            Name = "Remove product 1",
+                            Name = "DeleteProductsV1",
                             ParentId = "13e2f21a-4283-4ff8-bb7a-096e7b89e0f0",
                             SortOrder = 2,
-                            Url = "http://localhost:5000/api/v1/products/1"
+                            Url = "http://localhost:5000/api/v1/products/{productId}"
                         });
                 });
 
@@ -371,42 +329,30 @@ namespace DistributedSystem.Persistence.Migrations
                         {
                             RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
                             FunctionId = "1156b66d-ef2f-471e-9e37-44dfb2aea415",
-                            ActionId = "3e700c49-37ee-4baa-8384-b1fe9f95f822"
+                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
+                        },
+                        new
+                        {
+                            RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
+                            FunctionId = "1b8c6511-d1db-4c01-b65a-1c60ec0bf90c",
+                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
+                        },
+                        new
+                        {
+                            RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
+                            FunctionId = "401b7a1d-6489-4b0e-9dc7-a27277d6e3dc",
+                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
                         },
                         new
                         {
                             RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
                             FunctionId = "8344a326-5e0f-4389-a251-832aae182286",
-                            ActionId = "51e900fa-9445-486f-bd27-47bb1684673d"
+                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
                         },
                         new
                         {
                             RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
                             FunctionId = "e4bb65d0-3ff6-4182-af22-33a91e844af9",
-                            ActionId = "8892ffdc-c7af-49cd-af76-d221c6642799"
-                        },
-                        new
-                        {
-                            RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
-                            FunctionId = "1b8c6511-d1db-4c01-b65a-1c60ec0bf90c",
-                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
-                        },
-                        new
-                        {
-                            RoleId = new Guid("424c4755-379e-440c-b67e-d53a4d615113"),
-                            FunctionId = "401b7a1d-6489-4b0e-9dc7-a27277d6e3dc",
-                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
-                        },
-                        new
-                        {
-                            RoleId = new Guid("0d395fbd-3271-44a2-b147-4b77be0464e6"),
-                            FunctionId = "1b8c6511-d1db-4c01-b65a-1c60ec0bf90c",
-                            ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
-                        },
-                        new
-                        {
-                            RoleId = new Guid("0d395fbd-3271-44a2-b147-4b77be0464e6"),
-                            FunctionId = "401b7a1d-6489-4b0e-9dc7-a27277d6e3dc",
                             ActionId = "9c955674-7377-4b52-b5f4-82eab10fe6ed"
                         });
                 });

@@ -1,4 +1,5 @@
-﻿using DistributedSystem.Domain.Entities.Identity;
+﻿using Castle.DynamicProxy.Generators;
+using DistributedSystem.Domain.Entities.Identity;
 using DistributedSystem.Persistence.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -32,6 +33,58 @@ namespace DistributedSystem.Persistence.Configurations
                 .WithOne()
                 .HasForeignKey(aif => aif.FunctionId)
                 .IsRequired();
+
+
+            var functions = new List<Function>()
+            {
+                new Function()
+                {
+                    Id = "1b8c6511-d1db-4c01-b65a-1c60ec0bf90c",
+                    Name = "Retrieve all products",
+                    Url = "http://localhost:5000/api/v1/products",
+                    ParentId = "13e2f21a-4283-4ff8-bb7a-096e7b89e0f0",
+                    SortOrder = 2,
+                    CssClass = "ProductApi"
+                },
+                new Function()
+                {
+                    Id = "401b7a1d-6489-4b0e-9dc7-a27277d6e3dc",
+                    Name = "Retrieve the details for product 1",
+                    Url = "http://localhost:5000/api/v1/products/1",
+                    ParentId = "13e2f21a-4283-4ff8-bb7a-096e7b89e0f0",
+                    SortOrder = 2,
+                    CssClass = "ProductApi"
+                },
+                new Function()
+                {
+                    Id = "1156b66d-ef2f-471e-9e37-44dfb2aea415",
+                    Name = "Create a new product",
+                    Url = "http://localhost:5000/api/v1/products",
+                    ParentId = "13e2f21a-4283-4ff8-bb7a-096e7b89e0f0",
+                    SortOrder = 2,
+                    CssClass = "ProductApi"
+                },
+                new Function()
+                {
+                    Id = "8344a326-5e0f-4389-a251-832aae182286",
+                    Name = "Update the details of product 1 if it exists",
+                    Url = "http://localhost:5000/api/v1/products/1",
+                    ParentId = "13e2f21a-4283-4ff8-bb7a-096e7b89e0f0",
+                    SortOrder = 2,
+                    CssClass = "ProductApi"
+                },
+                new Function()
+                {
+                    Id = "e4bb65d0-3ff6-4182-af22-33a91e844af9",
+                    Name = "Remove product 1",
+                    Url = "http://localhost:5000/api/v1/products/1",
+                    ParentId = "13e2f21a-4283-4ff8-bb7a-096e7b89e0f0",
+                    SortOrder = 2,
+                    CssClass = "ProductApi"
+                },
+            };
+
+            builder.HasData(functions);
         }
     }
 }

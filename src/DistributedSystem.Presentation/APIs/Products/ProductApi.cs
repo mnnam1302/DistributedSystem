@@ -3,6 +3,7 @@ using DistributedSystem.Contract.Enumerations;
 using DistributedSystem.Contract.Extensions;
 using DistributedSystem.Presentation.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +26,9 @@ namespace DistributedSystem.Presentation.APIs.Products
             var group1 = app.NewVersionedApi("products")
                 .MapGroup(BaseUrl).HasApiVersion(1); //.RequireAuthorization();
 
-            group1.MapPost(string.Empty, CreateProductsV1);
             group1.MapGet(string.Empty, GetProductsV1);
             group1.MapGet("{productId}", GetProductsByIdV1);
+            group1.MapPost(string.Empty, CreateProductsV1);
             group1.MapDelete("{productId}", DeleteProductsV1);
             group1.MapPut("{productId}", UpdateProductsV1);
 
@@ -95,7 +96,7 @@ namespace DistributedSystem.Presentation.APIs.Products
 
             return Results.Ok(result);
         }
-
+        
         public static async Task<IResult> GetProductsByIdV1(ISender sender, Guid productId)
         {
             var result = await sender.Send(new CommandV1.Query.GetProductByIdQuery(productId));

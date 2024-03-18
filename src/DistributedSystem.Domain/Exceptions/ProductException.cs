@@ -7,7 +7,7 @@ namespace DistributedSystem.Domain.Exceptions
         public class ProductNotFoundException : NotFoundException
         {
             public ProductNotFoundException(Guid productId)
-                : base($"The product with id {productId} was not found.")
+                : base($"The product with Id {productId} was not found.")
             {
             }
         }
@@ -15,7 +15,7 @@ namespace DistributedSystem.Domain.Exceptions
         public class ProductFieldException : NotFoundException
         {
             public ProductFieldException(string productField)
-                : base($"The product with field {productField} is not correct.")
+                : base($"The product with Field {productField} is not correct.")
             {
             }
         }

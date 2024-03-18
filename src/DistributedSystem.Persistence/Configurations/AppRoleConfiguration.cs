@@ -33,6 +33,28 @@ namespace DistributedSystem.Persistence.Configurations
                 .WithOne()
                 .HasForeignKey(p => p.RoleId)
                 .IsRequired();
+
+            var roles = new List<AppRole>()
+            {
+                new AppRole()
+                {
+                    Id = Guid.Parse("424C4755-379E-440C-B67E-D53A4D615113"),
+                    Name = "Admin",
+                    NormalizedName = "ADMIN",
+                    Description = "Administrator role with full access",
+                    RoleCode = "ADM"
+                },
+                new AppRole()
+                {
+                    Id = Guid.Parse("0D395FBD-3271-44A2-B147-4B77BE0464E6"),
+                    Name = "User",
+                    NormalizedName = "USER",
+                    Description = "Standard user role with limited access",
+                    RoleCode = "USR"
+                },
+            };
+
+            builder.HasData(roles);
         }
     }
 }
