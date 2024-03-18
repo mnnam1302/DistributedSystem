@@ -95,6 +95,11 @@ namespace DistributedSystem.Persistence.DependencyInjection.Extensions
             });
         }
 
+        public static void AddDapperRepositoryPersistence(this IServiceCollection services)
+        {
+            services.AddTransient<IDapperRepositoryBase, DapperRepositoryBase>();
+        }
+
         public static void AddInterceptorPersistence(this IServiceCollection services)
         {
             services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();

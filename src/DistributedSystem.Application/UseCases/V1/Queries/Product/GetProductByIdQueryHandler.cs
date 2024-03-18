@@ -40,15 +40,15 @@ namespace DistributedSystem.Application.UseCases.V1.Queries.Product
             //if (product is null)
             //    return Result.Failure<Response.ProductResponse>(ProductErrors.NotFound(request.Id));
 
-            //var product = await _productRepository.FindByIdAsync(request.Id)
-            //    ?? throw new ProductException.ProductNotFoundException(request.Id);
+            var product = await _productRepository.FindByIdAsync(request.Id)
+                ?? throw new ProductException.ProductNotFoundException(request.Id);
 
             // TEST
             // EF Core
-            var product = await _dbContext.Products
-                .AsNoTracking()
-                .Where(p => p.Id == request.Id)
-                .FirstOrDefaultAsync(cancellationToken);
+            //var product = await _dbContext.Products
+            //    .AsNoTracking()
+            //    .Where(p => p.Id == request.Id)
+            //    .FirstOrDefaultAsync(cancellationToken);
 
             var result = _mapper.Map<Response.ProductResponse>(product);
 

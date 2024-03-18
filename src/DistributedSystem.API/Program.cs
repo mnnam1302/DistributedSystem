@@ -74,6 +74,7 @@ builder.Services.AddInterceptorPersistence();
 builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
 builder.Services.AddSqlPersistence();
 builder.Services.AddRepositoryPersistence();
+builder.Services.AddDapperRepositoryPersistence();
 
 
 // Add Middleware => Remember use middleware
