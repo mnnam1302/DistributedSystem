@@ -32,7 +32,7 @@ namespace DistributedSystem.Application.UseCases.V1.Queries.Identity
                 new { request.Email });
 
             if (user is null)
-                throw new IdentityException.UserByEmailNotFoundException(request.Email);
+                throw new IdentityException.UserNotFoundByEmailException(request.Email);
 
             var result = _mapper.Map<Response.UserResponse>(user);
 

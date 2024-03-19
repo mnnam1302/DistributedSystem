@@ -2,6 +2,7 @@
 {
     public static class IdentityException
     {
+        #region =========== Token ================
         public class TokenException : DomainException
         {
             public TokenException(string message)
@@ -9,6 +10,11 @@
             {
             }
         }
+
+        #endregion =========== Token ================
+
+
+        #region =========== AppUsers ================
 
         public class UserExistsException : DomainException
         {
@@ -18,12 +24,34 @@
             }
         }
 
-        public class UserByEmailNotFoundException : NotFoundException
+        public class UserNotFoundException : NotFoundException
         {
-            public UserByEmailNotFoundException(string email)
+            public UserNotFoundException(Guid userId)
+                : base($"The user with Id {userId} was not found.")
+            {
+            }
+        }
+
+        public class UserNotFoundByEmailException : NotFoundException
+        {
+            public UserNotFoundByEmailException(string email)
                 : base($"The user with Email {email} was not found.")
             {
             }
         }
+
+        #endregion =========== AppUsers ================
+
+        #region =========== AppRoles ================
+
+        public class RoleNotFoundException : NotFoundException
+        {
+            public RoleNotFoundException(Guid roleId)
+                : base($"The role with Id {roleId} was not found.")
+            {
+            }
+        }
+
+        #endregion =========== AppRoles ================
     }
 }

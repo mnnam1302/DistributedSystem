@@ -4,7 +4,7 @@ namespace DistributedSystem.Contract.Services.V1.Product
 {
     public static class Command
     {
-        public record CreatedProductCommand(string Name, decimal Price, string Description) : ICommand;
+        public record CreateProductCommand(string Name, decimal Price, string Description) : ICommand;
 
         public record UpdateProductCommand(Guid Id, string Name, decimal Price, string Description) : ICommand;
 

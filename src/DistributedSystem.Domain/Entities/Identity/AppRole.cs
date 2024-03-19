@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DistributedSystem.Domain.Abstractions.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace DistributedSystem.Domain.Entities.Identity
 {
-    public class AppRole : IdentityRole<Guid>
+    public class AppRole : IdentityRole<Guid>, IEntity<Guid>
     {
         public string Description { get; set; }
         public string RoleCode { get; set; }

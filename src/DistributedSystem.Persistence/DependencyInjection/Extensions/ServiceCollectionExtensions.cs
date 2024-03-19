@@ -113,6 +113,9 @@ namespace DistributedSystem.Persistence.DependencyInjection.Extensions
 
             services.AddTransient(typeof(IUnitOfWorkDbContext<>), typeof(EFUnitOfWorkDbContext<>));
             services.AddTransient(typeof(IRepositoryBaseDbContext<,,>), typeof(RepositoryBaseDbContext<,,>));
+
+
+            services.AddTransient(typeof(IAppUserRoleRepository), typeof(AppUserRoleRepository));
         }
 
         public static OptionsBuilder<SqlServerRetryOptions> ConfigureSqlServerRetryOptionsPersistence(this IServiceCollection services, IConfiguration section)

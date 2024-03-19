@@ -5,7 +5,7 @@ using DistributedSystem.Domain.Abstractions.Repositories;
 
 namespace DistributedSystem.Application.UseCases.V1.Commands.Product
 {
-    public sealed class CreateProductCommandHandler : ICommandHandler<Command.CreatedProductCommand>
+    public sealed class CreateProductCommandHandler : ICommandHandler<Command.CreateProductCommand>
     {
         private readonly IRepositoryBase<Domain.Entities.Product, Guid> _productRepository;
 
@@ -14,7 +14,7 @@ namespace DistributedSystem.Application.UseCases.V1.Commands.Product
             _productRepository = productRepository;
         }
 
-        public async Task<Result> Handle(Command.CreatedProductCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(Command.CreateProductCommand request, CancellationToken cancellationToken)
         {
             // Thay vì class thì ở đây mình dùng record
             // Cách triển khai IRequest và IRequestHandler rất hay

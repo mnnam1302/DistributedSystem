@@ -31,7 +31,7 @@ namespace DistributedSystem.Domain.Entities.Identity
         public virtual ICollection<IdentityUserToken<Guid>> Tokens { get; set; }
         public virtual ICollection<IdentityUserRole<Guid>> UserRoles { get; set; }
 
-        protected AppUser(Guid id, string firstName, string fullName, string lastName, DateTime? dateOfBirth, string? phoneNumber, string email, string passwordHash, string passwordSalt)
+        protected AppUser(Guid id, string firstName, string lastName, string fullName, DateTime? dateOfBirth, string? phoneNumber, string email, string passwordHash, string passwordSalt)
         {
             Id = id;
             FirstName = firstName;

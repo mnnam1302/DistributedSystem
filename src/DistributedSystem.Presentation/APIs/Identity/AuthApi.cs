@@ -20,7 +20,6 @@ namespace DistributedSystem.Presentation.APIs.Identity
                 .MapGroup(BaseUrl).HasApiVersion(1).RequireAuthorization();
 
             group1.MapPost("sign-in", AuthenticationV1).AllowAnonymous();
-            //group1.MapPost("sign-up", RegisterV1).AllowAnonymous();
         }
 
         public static async Task<IResult> AuthenticationV1(ISender sender, [FromBody] Contract.Services.V1.Identity.Query.GetLoginQuery login)

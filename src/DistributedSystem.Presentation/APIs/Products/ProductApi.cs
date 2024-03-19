@@ -52,7 +52,7 @@ namespace DistributedSystem.Presentation.APIs.Products
 
         #region ========= Version 1 =========
 
-        public static async Task<IResult> CreateProductsV1(ISender sender, [FromBody] CommandV1.Command.CreatedProductCommand createProduct)
+        public static async Task<IResult> CreateProductsV1(ISender sender, [FromBody] CommandV1.Command.CreateProductCommand createProduct)
         {
             var result = await sender.Send(createProduct);
 

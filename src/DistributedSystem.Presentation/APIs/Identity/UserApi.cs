@@ -18,9 +18,14 @@ namespace DistributedSystem.Presentation.APIs.Identity
                 .MapGroup(BaseUrl).HasApiVersion(1);
 
             group1.MapPost("", RegisterUsersV1);
+
             group1.MapGet("", GetUsersByEmailV1);
+            //group1.MapGet("", GetUsersV1);
+            //group1.MapGet("{userId}", UpdateUsersV1);
+            //group1.MapGet("{userId}", DeleteUsersV1);
         }
 
+        #region ================= Version 01 =====================
         private static async Task<IResult> RegisterUsersV1(ISender Sender, [FromBody] Contract.Services.V1.Identity.Command.RegisterUserCommand registerUserCommand)
         {
             var result = await Sender.Send(registerUserCommand);
@@ -42,5 +47,7 @@ namespace DistributedSystem.Presentation.APIs.Identity
 
             return Results.Ok(result);
         }
+
+        #endregion ================= Version 01 =====================
     }
 }

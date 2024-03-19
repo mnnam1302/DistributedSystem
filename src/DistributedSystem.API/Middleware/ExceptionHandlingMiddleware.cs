@@ -55,8 +55,12 @@ namespace DistributedSystem.API.Middleware
 
                 // Identity
                 IdentityException.TokenException => StatusCodes.Status401Unauthorized,
+
                 IdentityException.UserExistsException => StatusCodes.Status400BadRequest,
-                IdentityException.UserByEmailNotFoundException => StatusCodes.Status404NotFound,
+                IdentityException.UserNotFoundException => StatusCodes.Status404NotFound,
+                IdentityException.UserNotFoundByEmailException => StatusCodes.Status404NotFound,
+
+                IdentityException.RoleNotFoundException => StatusCodes.Status404NotFound,
 
                 // Product
                 // Should be remove later

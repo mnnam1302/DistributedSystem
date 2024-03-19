@@ -2,7 +2,7 @@
 {
     public static class Response
     {
-        public class Authenticated
+        public sealed class Authenticated
         {
             public string? AccessToken { get; set; }
             public string? RefreshToken { get; set; }
@@ -11,6 +11,7 @@
 
         public sealed record UserResponse
         {
+            public Guid Id { get; init; }
             public string FirstName { get; init; }
             public string LastName { get; init; }
             public string FullName { get; init; }
@@ -20,6 +21,13 @@
             public bool IsHeadOfDepartment { get; init; }
             public Guid? ManagerId { get; init; }
             public string PhoneNumber { get; init; }
+        }
+
+        public sealed record UserRoleResponse
+        {
+            public Guid Id { get; init; }
+            //public string FullName { get; init; }
+            public string Name { get; init; }
         }
 
         //public sealed record UserResponse(

@@ -46,5 +46,10 @@ namespace DistributedSystem.Persistence.Repositories
         {
             return await _connection.QueryAsync(sql, map, param, null, true, splitOn);
         }
+
+        public async Task<IEnumerable<TResult>> QueryMapAsync<TEntity1, TEntity2, TEntity3, TResult>(string sql, Func<TEntity1, TEntity2, TEntity3, TResult> map, object? param, string splitOn = "Id", CancellationToken cancellationToken = default)
+        {
+            return await _connection.QueryAsync(sql, map, param, null, true, splitOn);
+        }
     }
 }
