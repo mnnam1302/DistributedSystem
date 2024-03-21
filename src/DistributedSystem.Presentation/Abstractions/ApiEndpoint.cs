@@ -19,7 +19,7 @@ namespace DistributedSystem.Presentation.Abstractions
                 _ =>
                     Results.BadRequest(
                         CreateProblemDetails(
-                            "Bad Request", StatusCodes.Status404NotFound,
+                            "Bad Request", StatusCodes.Status400BadRequest,
                             result.Error))
             };
 

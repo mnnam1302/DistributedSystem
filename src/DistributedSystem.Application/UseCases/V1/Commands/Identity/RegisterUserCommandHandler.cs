@@ -4,11 +4,12 @@ using DistributedSystem.Contract.Abstractions.Shared;
 using DistributedSystem.Contract.Services.V1.Identity;
 using DistributedSystem.Domain.Abstractions.Repositories;
 using DistributedSystem.Domain.Entities.Identity;
+using DistributedSystem.Domain.Errors;
 using DistributedSystem.Domain.Exceptions;
 
 namespace DistributedSystem.Application.UseCases.V1.Commands.Identity
 {
-    public class RegisterUserCommandHandler : ICommandHandler<Command.RegisterUserCommand>
+    internal sealed class RegisterUserCommandHandler : ICommandHandler<Command.RegisterUserCommand>
     {
         private readonly IRepositoryBase<AppUser, Guid> _userRepository;
         private readonly IPasswordHasherService _passwordHasherService;
@@ -24,8 +25,10 @@ namespace DistributedSystem.Application.UseCases.V1.Commands.Identity
         {
             var isExistsUser = await _userRepository.FindSingleAsync(x => x.Email.Equals(request.Email), cancellationToken);
 
+            // Should be throw here, or use Result.Failure(Error)
             if (isExistsUser is not null)
-                throw new IdentityException.UserExistsException("The user with email has already exists.");
+                //throw new IdentityException.UserExistsException("The user with email has already exists.");
+                return Result.Failure(UserErrors.EmailAlreadyInUse(request.Email));
 
             var passwordSalt = _passwordHasherService.GenerateSalt();
             var passwordHash = _passwordHasherService.HashPassword(request.Password, passwordSalt);
