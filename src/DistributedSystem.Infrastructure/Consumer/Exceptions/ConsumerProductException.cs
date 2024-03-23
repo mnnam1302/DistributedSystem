@@ -1,13 +1,12 @@
-﻿namespace DistributedSystem.Infrastructure.Consumer.Exceptions
+﻿namespace DistributedSystem.Infrastructure.Consumer.Exceptions;
+
+public static class ConsumerProductException
 {
-    public static class ConsumerProductException
+    public class ConsumerProductNotFoundException : ConsumerNotFoundException
     {
-        public class ConsumerProductNotFoundException : ConsumerNotFoundException
+        public ConsumerProductNotFoundException(Guid productId)
+            : base($"The product projection with id {productId} was not found.")
         {
-            public ConsumerProductNotFoundException(Guid productId)
-                : base($"The product projection with id {productId} was not found.")
-            {
-            }
         }
     }
 }

@@ -1,13 +1,12 @@
-﻿namespace DistributedSystem.Infrastructure.Consumer.Attributes
-{
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class BsonCollectionAttribute : Attribute
-    {
-        public string CollectionName { get; }
+﻿namespace DistributedSystem.Infrastructure.Consumer.Attributes;
 
-        public BsonCollectionAttribute(string collectionName)
-        {
-            CollectionName = collectionName;
-        }
+[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+public class BsonCollectionAttribute : Attribute
+{
+    public string CollectionName { get; }
+
+    public BsonCollectionAttribute(string collectionName)
+    {
+        CollectionName = collectionName;
     }
 }

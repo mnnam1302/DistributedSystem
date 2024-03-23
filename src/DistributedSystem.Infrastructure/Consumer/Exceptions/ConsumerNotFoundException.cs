@@ -1,10 +1,9 @@
-﻿namespace DistributedSystem.Infrastructure.Consumer.Exceptions
+﻿namespace DistributedSystem.Infrastructure.Consumer.Exceptions;
+
+public class ConsumerNotFoundException : ConsumerException
 {
-    public class ConsumerNotFoundException : ConsumerException
+    public ConsumerNotFoundException(string message) 
+        : base("Consumer Not Found", message)
     {
-        public ConsumerNotFoundException(string message) 
-            : base("Consumer Not Found", message)
-        {
-        }
     }
 }

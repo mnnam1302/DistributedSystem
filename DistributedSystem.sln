@@ -5,8 +5,10 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{598036D2-6B2E-41D8-982E-90561C8EB529}"
 	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
 		docker-compose.Dev.infrastructure.yml = docker-compose.Dev.infrastructure.yml
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3B941AFF-946A-4481-A5A2-FD20917ED92C}"
@@ -26,6 +28,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistributedSystem.Persistence", "src\DistributedSystem.Persistence\DistributedSystem.Persistence.csproj", "{FB872F84-03F4-4971-AD44-BCC08089A27D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistributedSystem.Presentation", "src\DistributedSystem.Presentation\DistributedSystem.Presentation.csproj", "{112D85AC-27A0-4FB9-992D-D56BA1471C99}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistributedSystem.Application.UnitTests", "test\DistributedSystem.Application.UnitTests\DistributedSystem.Application.UnitTests.csproj", "{5003156B-DFAB-4624-934F-02E45999160B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistributedSystem.Architecture.Tests", "DistributedSystem.ArchitectureTests\DistributedSystem.Architecture.Tests.csproj", "{DA48336D-A2A7-4F85-8CCB-1473829ACF66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +67,14 @@ Global
 		{112D85AC-27A0-4FB9-992D-D56BA1471C99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{112D85AC-27A0-4FB9-992D-D56BA1471C99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{112D85AC-27A0-4FB9-992D-D56BA1471C99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5003156B-DFAB-4624-934F-02E45999160B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5003156B-DFAB-4624-934F-02E45999160B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5003156B-DFAB-4624-934F-02E45999160B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5003156B-DFAB-4624-934F-02E45999160B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA48336D-A2A7-4F85-8CCB-1473829ACF66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA48336D-A2A7-4F85-8CCB-1473829ACF66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA48336D-A2A7-4F85-8CCB-1473829ACF66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA48336D-A2A7-4F85-8CCB-1473829ACF66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +87,8 @@ Global
 		{74AFA2CB-2CB7-4753-8D0B-5DA6B9D20C55} = {3B941AFF-946A-4481-A5A2-FD20917ED92C}
 		{FB872F84-03F4-4971-AD44-BCC08089A27D} = {3B941AFF-946A-4481-A5A2-FD20917ED92C}
 		{112D85AC-27A0-4FB9-992D-D56BA1471C99} = {3B941AFF-946A-4481-A5A2-FD20917ED92C}
+		{5003156B-DFAB-4624-934F-02E45999160B} = {07EF78D0-6DA8-4FC4-AB26-54A3261DDE84}
+		{DA48336D-A2A7-4F85-8CCB-1473829ACF66} = {07EF78D0-6DA8-4FC4-AB26-54A3261DDE84}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A454EAD-E420-4229-A2B9-2D2817FC2461}

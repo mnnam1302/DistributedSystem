@@ -1,95 +1,101 @@
 ﻿using DistributedSystem.Domain.Exceptions;
 using DistributedSystem.Infrastructure.Consumer.Exceptions;
 using System.Text.Json;
-namespace DistributedSystem.API.Middleware
+
+namespace DistributedSystem.API.Middleware;
+
+// Kế thừa từ Middleware
+public class ExceptionHandlingMiddleware : IMiddleware
 {
-    // Kế thừa từ Middleware
-    public class ExceptionHandlingMiddleware : IMiddleware
+    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+
+    public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger)
     {
-        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+        _logger = logger;
+    }
 
-        public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger)
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    {
+        try
         {
-            _logger = logger;
+            // Nếu trong next() có lỗi thì ngoài catch sẽ bắt được và nó sẽ handle cái lỗi
+            await next(context);
+        } 
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+
+            await HandleExceptionAsync(context, ex);
         }
+    }
 
-        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    private static async Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
+    {
+        var statusCode = GetStatusCode(exception);
+
+        var response = new
         {
-            try
-            {
-                // Nếu trong next() có lỗi thì ngoài catch sẽ bắt được và nó sẽ handle cái lỗi
-                await next(context);
-            } 
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
+            title = GetTitle(exception),
+            status = statusCode,
+            detail = exception.Message,
+            errors = GetErrors(exception)
+        };
 
-                await HandleExceptionAsync(context, ex);
-            }
-        }
+        httpContext.Response.ContentType = "application/json";
 
-        private static async Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
+        httpContext.Response.StatusCode = statusCode;
+
+        await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
+    }
+
+    private static int GetStatusCode(Exception exception) =>
+        exception switch
         {
-            var statusCode = GetStatusCode(exception);
+            // Consumer
+            ConsumerProductException.ConsumerProductNotFoundException => StatusCodes.Status404NotFound,
 
-            var response = new
-            {
-                title = GetTitle(exception),
-                status = statusCode,
-                detail = exception.Message,
-                errors = GetErrors(exception)
-            };
+            // Identity
+            IdentityException.TokenException => StatusCodes.Status401Unauthorized,
 
-            httpContext.Response.ContentType = "application/json";
+            IdentityException.UserExistsException => StatusCodes.Status400BadRequest,
+            IdentityException.UserNotFoundException => StatusCodes.Status404NotFound,
+            IdentityException.UserNotFoundByEmailException => StatusCodes.Status404NotFound,
 
-            httpContext.Response.StatusCode = statusCode;
+            IdentityException.RoleNotFoundException => StatusCodes.Status404NotFound,
+
+            // Product
+            // Should be remove later
+            ProductException.ProductFieldException => StatusCodes.Status406NotAcceptable, 
+
+            // Domain
+            BadRequestException => StatusCodes.Status400BadRequest,
+            NotFoundException => StatusCodes.Status404NotFound,
             
-            await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
-        }
+            // Application.Exceptions.ValidationException => StatusCodes.Status422UnprocessableEntity,
+            // FluentValidation.ValidationException => StatusCodes.Status422UnprocessableEntity, // Comment because ValidationDefaultBehavior is not used
+            FormatException => StatusCodes.Status422UnprocessableEntity,
+            InvalidOperationException => StatusCodes.Status500InternalServerError,
 
-        private static int GetStatusCode(Exception exception) =>
-            exception switch
-            {
-                // Consumer
-                ConsumerProductException.ConsumerProductNotFoundException => StatusCodes.Status404NotFound,
+            // Tường hợp mặc định, nếu không có th nào map ở trên thì trả về 500
+            _ => StatusCodes.Status500InternalServerError
+        };
 
-                // Identity
-                IdentityException.TokenException => StatusCodes.Status401Unauthorized,
-                IdentityException.UserExistsException => StatusCodes.Status400BadRequest,
-                IdentityException.UserByEmailNotFoundException => StatusCodes.Status404NotFound,
-
-                // Product
-                // Should be remove later
-                ProductException.ProductFieldException => StatusCodes.Status406NotAcceptable, 
-                
-                // Domain
-                BadRequestException => StatusCodes.Status400BadRequest,
-                NotFoundException => StatusCodes.Status404NotFound,
-                //Application.Exceptions.ValidationException => StatusCodes.Status422UnprocessableEntity,
-                //FluentValidation.ValidationException => StatusCodes.Status422UnprocessableEntity, // Comment because ValidationDefaultBehavior is not used
-                FormatException => StatusCodes.Status422UnprocessableEntity,
-                InvalidOperationException => StatusCodes.Status500InternalServerError,
-                // Tường hợp mặc định, nếu không có th nào map ở trên thì trả về 500
-                _ => StatusCodes.Status500InternalServerError
-            };
-
-        private static string GetTitle(Exception exception) =>
-            exception switch
-            {
-                DomainException applicationException => applicationException.Title,
-                _ => "Server error"
-            };
-
-        private static IReadOnlyCollection<DistributedSystem.Application.Exceptions.ValidationError> GetErrors(Exception exception)
+    private static string GetTitle(Exception exception) =>
+        exception switch
         {
-            IReadOnlyCollection<DistributedSystem.Application.Exceptions.ValidationError> errors = null;
+            DomainException applicationException => applicationException.Title,
+            _ => "Server error"
+        };
 
-            if (exception is DistributedSystem.Application.Exceptions.ValidationException validationException)
-            {
-                errors = validationException.Errors;
-            }
+    private static IReadOnlyCollection<DistributedSystem.Application.Exceptions.ValidationError> GetErrors(Exception exception)
+    {
+        IReadOnlyCollection<DistributedSystem.Application.Exceptions.ValidationError> errors = null;
 
-            return errors;
+        if (exception is DistributedSystem.Application.Exceptions.ValidationException validationException)
+        {
+            errors = validationException.Errors;
         }
+
+        return errors;
     }
 }

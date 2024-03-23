@@ -25,7 +25,6 @@ builder.Logging
 
 builder.Host.UseSerilog();
 
-
 // Add Carter module
 builder.Services.AddCarter();
 
@@ -54,7 +53,6 @@ builder.Services
 // Add Jwt Authentication => After, app.UseAuthentication(); app.UseAuthorization();
 builder.Services.AddJwtAuthenticationAPI(builder.Configuration);
 
-
 builder.Services.AddMediatRApplication();
 builder.Services.AddAutoMapperApplication();
 
@@ -66,7 +64,6 @@ builder.Services.AddServicesInfrastructure();
 builder.Services.AddRedisInfrastructure(builder.Configuration);
 builder.Services.ConfigureServicesInfrastructure(builder.Configuration);
 
-
 // Configure Options and SQL =>  remember mapcarter
 // Pass Configuration good - builder.Configuration.GetSection(nameof(SqlServerRetryOptions))
 // Not hard code at ConfigureSqlServerRetryOptions at Persistence ** My ERROR
@@ -76,10 +73,8 @@ builder.Services.AddSqlPersistence();
 builder.Services.AddRepositoryPersistence();
 builder.Services.AddDapperRepositoryPersistence();
 
-
 // Add Middleware => Remember use middleware
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
-
 
 var app = builder.Build();
 
@@ -96,11 +91,11 @@ app.UseAuthorization();
 // Add API endpoint with Carter module
 app.MapCarter(); // Must be after authenticatio and authorization
 
-
 // Configure the HTTP request pipeline.
 if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
+{
     app.UseSwaggerAPI(); // => After MapCarter => Show Version
-
+}
 
 try
 {

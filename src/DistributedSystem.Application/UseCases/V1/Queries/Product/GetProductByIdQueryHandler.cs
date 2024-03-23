@@ -8,51 +8,50 @@ using DistributedSystem.Domain.Exceptions;
 using DistributedSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace DistributedSystem.Application.UseCases.V1.Queries.Product
+namespace DistributedSystem.Application.UseCases.V1.Queries.Product;
+
+public class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductByIdQuery, Response.ProductResponse>
 {
-    public class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductByIdQuery, Response.ProductResponse>
+    //private readonly IRepositoryBase<Domain.Entities.Product, Guid> _productRepositoryBase;
+
+    // Sử dụng trong TH nhiều DbContext => Flexible hơn
+    private readonly IRepositoryBaseDbContext<ApplicationDbContext, Domain.Entities.Product, Guid> _productRepository;
+    private readonly IMapper _mapper;
+    private readonly ApplicationDbContext _dbContext;
+
+    public GetProductByIdQueryHandler(IRepositoryBaseDbContext<ApplicationDbContext, Domain.Entities.Product, Guid> productRepository,
+        //IRepositoryBase<Domain.Entities.Product, Guid> productRepositoryBase,
+        IMapper mapper,
+        ApplicationDbContext dbContext)
     {
-        //private readonly IRepositoryBase<Domain.Entities.Product, Guid> _productRepositoryBase;
+        _productRepository = productRepository;
+        //_productRepositoryBase = productRepositoryBase;
+        _mapper = mapper;
+        _dbContext = dbContext;
+    }
 
-        // Sử dụng trong TH nhiều DbContext => Flexible hơn
-        private readonly IRepositoryBaseDbContext<ApplicationDbContext, Domain.Entities.Product, Guid> _productRepository;
-        private readonly IMapper _mapper;
-        private readonly ApplicationDbContext _dbContext;
+    public async Task<Result<Response.ProductResponse>> Handle(Query.GetProductByIdQuery request, CancellationToken cancellationToken)
+    {
+        //Should be throw exception or use Result<T>.Failure()
+        //var productBase = await _productRepositoryBase.FindByIdAsync(request.Id)
+        //    ?? throw new ProductException.ProductNotFoundException(request.Id);
 
-        public GetProductByIdQueryHandler(IRepositoryBaseDbContext<ApplicationDbContext, Domain.Entities.Product, Guid> productRepository,
-            //IRepositoryBase<Domain.Entities.Product, Guid> productRepositoryBase,
-            IMapper mapper,
-            ApplicationDbContext dbContext)
-        {
-            _productRepository = productRepository;
-            //_productRepositoryBase = productRepositoryBase;
-            _mapper = mapper;
-            _dbContext = dbContext;
-        }
+        //var product = await _productRepository.FindByIdAsync(request.Id);
+        //if (product is null)
+        //    return Result.Failure<Response.ProductResponse>(ProductErrors.NotFound(request.Id));
 
-        public async Task<Result<Response.ProductResponse>> Handle(Query.GetProductByIdQuery request, CancellationToken cancellationToken)
-        {
-            //Should be throw exception or use Result<T>.Failure()
-            //var productBase = await _productRepositoryBase.FindByIdAsync(request.Id)
-            //    ?? throw new ProductException.ProductNotFoundException(request.Id);
+        var product = await _productRepository.FindByIdAsync(request.Id)
+            ?? throw new ProductException.ProductNotFoundException(request.Id);
 
-            //var product = await _productRepository.FindByIdAsync(request.Id);
-            //if (product is null)
-            //    return Result.Failure<Response.ProductResponse>(ProductErrors.NotFound(request.Id));
+        // TEST
+        // EF Core
+        //var product = await _dbContext.Products
+        //    .AsNoTracking()
+        //    .Where(p => p.Id == request.Id)
+        //    .FirstOrDefaultAsync(cancellationToken);
 
-            var product = await _productRepository.FindByIdAsync(request.Id)
-                ?? throw new ProductException.ProductNotFoundException(request.Id);
+        var result = _mapper.Map<Response.ProductResponse>(product);
 
-            // TEST
-            // EF Core
-            //var product = await _dbContext.Products
-            //    .AsNoTracking()
-            //    .Where(p => p.Id == request.Id)
-            //    .FirstOrDefaultAsync(cancellationToken);
-
-            var result = _mapper.Map<Response.ProductResponse>(product);
-
-            return Result.Success(result);
-        }
+        return Result.Success(result);
     }
 }
