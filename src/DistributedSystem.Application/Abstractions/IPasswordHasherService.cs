@@ -1,11 +1,10 @@
-﻿namespace DistributedSystem.Application.Abstractions
+﻿namespace DistributedSystem.Application.Abstractions;
+
+public interface IPasswordHasherService
 {
-    public interface IPasswordHasherService
-    {
-        string HashPassword(string password, string salt);
+    string HashPassword(string password, string salt);
 
-        bool VerifyPassword(string plaintextPassword, string cipertextPassword, string salt);
+    bool VerifyPassword(string plaintextPassword, string cipertextPassword, string salt);
 
-        string GenerateSalt();
-    }
+    string GenerateSalt();
 }

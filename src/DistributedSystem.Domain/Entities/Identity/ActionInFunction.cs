@@ -1,8 +1,8 @@
-﻿namespace DistributedSystem.Domain.Entities.Identity
+﻿namespace DistributedSystem.Domain.Entities.Identity;
+
+public class ActionInFunction
 {
-    public class ActionInFunction
-    {
-        public string ActionId { get; set; }
-        public string FunctionId { get; set; }
-    }
+    public string ActionId { get; set; }
+
+    public string FunctionId { get; set; }
 }
