@@ -1,4 +1,6 @@
-﻿using DistributedSystem.Application.Abstractions;
+﻿using System.Configuration;
+using System.Reflection;
+using DistributedSystem.Application.Abstractions;
 using DistributedSystem.Contract.JsonConverters;
 using DistributedSystem.Infrastructure.Authentication;
 using DistributedSystem.Infrastructure.BackgroundJobs;
@@ -9,15 +11,20 @@ using DistributedSystem.Infrastructure.DependencyInjection.Options;
 using DistributedSystem.Infrastructure.PasswordHasher;
 using DistributedSystem.Infrastructure.PipelineObservers;
 using MassTransit;
-using MassTransit.Configuration;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using OpenTelemetry.Exporter;
+using OpenTelemetry.Instrumentation.AspNetCore;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Quartz;
-using System.ComponentModel;
-using System.Net.NetworkInformation;
-using System.Reflection;
 
 namespace DistributedSystem.Infrastructure.DependencyInjection.Extensions;
 
@@ -37,7 +44,6 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<IMongoDbSettings>(serviceProvider =>
             serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
-
 
         services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
     }
@@ -177,5 +183,105 @@ public static class ServiceCollectionExtensions
     {
         // Tại sao ở đây lại có thêm Validator => MesssageBusOptions có các ràng buộc
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(AssemblyReference.Assembly));
+    }
+
+    public static WebApplicationBuilder AddOpenTelemetryInfrastructure(this WebApplicationBuilder builder)
+    {
+        var resourceBuilder = ResourceBuilder.CreateDefault()
+               .AddService(serviceName: builder.Configuration.GetValue<string>("Otlp:ServiceName"));
+
+        var logExporter = builder.Configuration.GetValue<string>("UseLogExporter").ToLowerInvariant();
+        // Logging
+        builder.Logging.AddOpenTelemetry(logging =>
+        {
+            // TODO: setup exporter here
+            logging.SetResourceBuilder(resourceBuilder);
+            switch (logExporter)
+            {
+                case "console":
+                    logging.AddConsoleExporter();
+                    break;
+                case "otlp":
+                    logging.SetResourceBuilder(ResourceBuilder.CreateDefault()
+                        .AddService(serviceName: builder.Configuration.GetValue<string>("Otlp:ServiceName")));
+
+                    logging.AddOtlpExporter(opt =>
+                        opt.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint")));
+                    break;
+                case "":
+                case "none":
+                    break;
+            }
+        });
+
+        // Metrics
+        var metricsExporter = builder.Configuration.GetValue<string>("UseMetricsExporter").ToLowerInvariant();
+
+        builder.Services.AddOpenTelemetry()
+            .WithMetrics(metrics =>
+            {
+                metrics.SetResourceBuilder(resourceBuilder)
+                    .AddRuntimeInstrumentation()
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation();
+
+                switch (metricsExporter)
+                {
+                    case "console":
+                        metrics.AddConsoleExporter((exporterOptions, metricReaderOptions) =>
+                        {
+                            exporterOptions.Targets = ConsoleExporterOutputTargets.Console;
+
+                            // The ConsoleMetricExporter defaults to a manual collect cycle.
+                            // This configuration causes metrics to be exported to stdout on a 10s interval.
+                            // metricReaderOptions.MetricReaderType = MetricReaderType.Periodic;
+                            metricReaderOptions.PeriodicExportingMetricReaderOptions.ExportIntervalMilliseconds = 10000;
+                        });
+                        break;
+                    case "otlp":
+                        metrics.AddOtlpExporter(opt =>
+                            opt.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint")));
+                        break;
+                    case "":
+                    case "none":
+                        break;
+                }
+            });
+
+        // Tracing
+        var tracingExporter = builder.Configuration.GetValue<string>("UseTracingExporter").ToLowerInvariant();
+
+        builder.Services.AddOpenTelemetry()
+            .WithTracing(tracing =>
+            {
+                tracing
+                    .SetResourceBuilder(resourceBuilder)
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation();
+
+                switch (tracingExporter)
+                {
+                    case "console":
+                        tracing.AddConsoleExporter();
+
+                        // For options which can be bound from IConfiguration
+                        builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(builder.Configuration.GetSection("AspNetCoreInstrumentation"));
+
+                        // For options which can be configured from code only
+                        builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options =>
+                            options.Filter = _ => true);
+
+                        break;
+                    case "otlp":
+                        tracing.AddOtlpExporter(otlpOtions =>
+                            otlpOtions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint")));
+                        break;
+                    case "":
+                    case "none":
+                        break;
+                }
+            });
+
+        return builder;
     }
 }

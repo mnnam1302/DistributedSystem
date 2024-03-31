@@ -13,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Add configuration
 
-
 Log.Logger = new LoggerConfiguration().ReadFrom
     .Configuration(builder.Configuration)
     .CreateLogger();
@@ -63,6 +62,9 @@ builder.Services.AddMediatRInfrastructure();
 builder.Services.AddServicesInfrastructure();
 builder.Services.AddRedisInfrastructure(builder.Configuration);
 builder.Services.ConfigureServicesInfrastructure(builder.Configuration);
+
+// OpenTelemetry
+builder.AddOpenTelemetryInfrastructure();
 
 // Configure Options and SQL =>  remember mapcarter
 // Pass Configuration good - builder.Configuration.GetSection(nameof(SqlServerRetryOptions))
